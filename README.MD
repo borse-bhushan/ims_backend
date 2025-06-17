@@ -127,6 +127,8 @@ Seamless support for both **shared** and **isolated** databases. Each tenant can
   - CI/CD version traceability
   - Frontend debugging without needing separate instrumentation
 
+----
+
 - 🐞 **Logging**: Custom `log_msg` utility that logs with function context, reference data, and emoji-level markers in local Linux environments.
 
   - 🛑 **Print Statement Control**
