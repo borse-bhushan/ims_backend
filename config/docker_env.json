@@ -4,7 +4,7 @@
     "DEBUG": false,
     "DISABLE_PRINT": true,
     "ALLOWED_HOSTS": [
-        "*"
+        ".localhost", "localhost"
     ],
     "DATABASES": {
         "default": {
