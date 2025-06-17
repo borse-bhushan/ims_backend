@@ -149,6 +149,13 @@ Seamless support for both **shared** and **isolated** databases. Each tenant can
 
 ----
 
+- 🌍 **CORS Support**:
+  Fully configured **Cross-Origin Resource Sharing** for seamless frontend-backend integration.
+  ✅ By default, CORS is open to all origins (`CORS_ALLOW_ALL_ORIGINS = True`) for development convenience.
+  🔧 This can be restricted by setting `CORS_ALLOWED_ORIGINS` in environment-specific configuration for production.
+
+----
+
 - 📤 **Unified Response Format**: All API responses follow a consistent structure using a centralized `generate_response` utility.
 
 ----
