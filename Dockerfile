@@ -25,4 +25,5 @@ RUN rm config/env.json && cp config/docker_env.json config/env.json
 RUN python manage.py collectstatic --noinput
 
 # Run the app using gunicorn
-CMD ["gunicorn", "ims.wsgi:application", "--config", "docker/gunicorn_conf.py"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# CMD ["gunicorn", "ims.wsgi:application", "--config", "docker/gunicorn_conf.py"]

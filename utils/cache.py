@@ -19,7 +19,7 @@ class CacheInterface:
         self.cache = d_cache
         self.clear()
 
-    def _build_key(key):
+    def _build_key(self, key):
         """
         Builds a cache key by prefixing it with the tenant ID if available.
         """
