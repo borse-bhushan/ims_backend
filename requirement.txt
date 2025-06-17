@@ -27,9 +27,9 @@ gunicorn==23.0.0
 
 
 # For the unit testing using pytest
-pytest-8.4.0
-pytest-django-4.11.1
-pytest-factoryboy-2.7.0
+pytest==8.4.0
+pytest-django==4.11.1
+pytest-factoryboy==2.7.0
 
 # for CORS
 django-cors-headers==4.7.0
