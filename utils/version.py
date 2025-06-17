@@ -3,7 +3,7 @@ This file will handle the version of the project.
 """
 
 import json
-from utils import constants
+from utils import constants, settings
 
 PATH = "config/ver.json"
 
@@ -34,7 +34,7 @@ def read_version():
     if version_obj.version_info:
         return version_obj.version_info
 
-    with open(PATH, "r", encoding="UTF-8") as file:
+    with open(settings.read("BASE_DIR") / PATH, "r", encoding="UTF-8") as file:
         version_str: str = file.read()
         version_obj.set_version(json.loads(version_str))
 

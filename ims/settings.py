@@ -61,7 +61,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 ]
 
-THIRD_PARTY_APPS = ["rest_framework", "drf_spectacular"]
+THIRD_PARTY_APPS = ["rest_framework", "drf_spectacular", "corsheaders"]
 INSTALLED_APPS += THIRD_PARTY_APPS
 
 MY_APPS = [
@@ -79,6 +79,8 @@ MY_APPS = [
 
 INSTALLED_APPS += MY_APPS
 
+CORS_ALLOW_ALL_ORIGINS = True
+
 AUTH_USER_MODEL = "auth_user.User"
 
 TOKEN_AUTHENTICATION_CLASS = "authentication.token.TokenAuthentication"
@@ -86,6 +88,7 @@ TOKEN_AUTHENTICATION_CLASS = "authentication.token.TokenAuthentication"
 DEFAULT_AUTHENTICATION_CLASSES = [TOKEN_AUTHENTICATION_CLASS]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "middleware.sub_dm.AttachSubdomainToRequestMiddleware",
     "middleware.exc.DRFExceptionMiddleware",
     "middleware.res.AddResponseHeadersMiddleware",
