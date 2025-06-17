@@ -40,11 +40,46 @@ python manage.py load_data
 
 ## 🔑 Key Features
 
-- 🔐 **Authentication & Authorization**: Login with dynamic role & permission control. Tenants can choose between:
-  - 🔑 **JWT-based Authentication**
-  - 🔒 **Token-based Authentication**
+- 🏢 **Tenant-wise Database Configuration**:
+Seamless support for both **shared** and **isolated** databases. Each tenant can configure their own database strategy.
+  - Tenants can operate on:
+    - A **shared RDBMS database**, or
+    - **Isolated databases** per Tenant
+    - 🔌 **Database Backend is Pluggable**: Easily extend support for **NoSQL databases** (e.g. MongoDB) or other RDBMS by abstracting DB access layer.
 
-- 🏢 **Multi-Tenancy Support**: Seamless support for both **shared** and **isolated** databases. Each tenant can configure their own database strategy.
+----
+
+- 🔐 **Tenant-wise Configurable Authentication and Authorization**
+  Each tenant can independently choose the authentication strategy:
+  - **JWT-based authentication**
+  - **Token-based authentication**
+  - 🔌 **Pluggable Design**: Easily extendable to integrate other mechanisms like **SAML SSO**, **OAuth2**, or **LDAP** as needed.
+  - Fine-grained access control where each API endpoint can be enabled or restricted per role, allowing admins to dynamically assign permissions to roles.
+
+----
+
+- ⚡ **Tenant-aware Caching**: Support for in-memory and Memcached caching with tenant-specific keys for isolated performance. A unified caching interface abstracts the underlying cache system, with current support for:
+  - **In-memory cache**
+  - **Memcached**
+  - 🔌 Additional backends (like Redis) can be plugged in easily by extending the interface
+
+----
+
+- 🌐 **Subdomain-Based Tenant Identification**
+  Every request is dynamically routed to the correct tenant using a custom middleware:
+  - Extracts the **subdomain** from the incoming request
+  - Fetches **tenant metadata** from cache or DB
+  - Binds tenant info to a **thread-local context**
+  - Automatically rejects invalid or unknown subdomains with a `400 Bad Request`
+
+  ✅ Smart behavior:
+  - Excludes specific routes (like health checks or login) using path-exclusion logic
+  - Tenant-aware state is auto-cleared after each request for thread safety
+
+  🔄 *Cached Tenant Resolution
+  Uses caching (like Memcached) to speed up tenant lookup on repeated requests.*
+
+----
 
 - 🧱 **Generic CRUD BaseView**
   Built-in **generic CRUD view class** that handles all standard Create, Read, Update, and Delete operations with minimal boilerplate.
@@ -59,19 +94,7 @@ python manage.py load_data
 
   🔧 You can override any method for full customization, making it a powerful foundation for rapid API development.
 
-- 🌐 **Subdomain-Based Tenant Identification**
-  Every request is dynamically routed to the correct tenant using a custom middleware:
-  - Extracts the **subdomain** from the incoming request
-  - Fetches **tenant metadata** from cache or DB
-  - Binds tenant info to a **thread-local context**
-  - Automatically rejects invalid or unknown subdomains with a `400 Bad Request`
-
-  ✅ Smart behavior:
-  - Excludes specific routes (like health checks or login) using path-exclusion logic
-  - Tenant-aware state is auto-cleared after each request for thread safety
-
-  🔄 **Cached Tenant Resolution**
-  Uses caching (like Memcached) to speed up tenant lookup on repeated requests.
+----
 
 - 🚨 **Centralized Exception Middleware**
   All unhandled exceptions in the API pipeline are caught and transformed into structured JSON responses.
@@ -89,6 +112,8 @@ python manage.py load_data
 
   🛡 Ensures even unexpected errors return a proper **500 Internal Server Error** response with a structured payload — no raw stack traces exposed to the client.
 
+----
+
 - ⏱ **Performance & Version Middleware**
   Automatically adds useful diagnostic metadata to every API response.
 
@@ -102,23 +127,41 @@ python manage.py load_data
   - CI/CD version traceability
   - Frontend debugging without needing separate instrumentation
 
-- 🐞 **Advanced Logging**: Custom `log_msg` utility that logs with function context, reference data, and emoji-level markers in local Linux environments.
+- 🐞 **Logging**: Custom `log_msg` utility that logs with function context, reference data, and emoji-level markers in local Linux environments.
+
+  - 🛑 **Print Statement Control**
+  Disable all `print()` statements project-wide (excluding virtual environments) using a single toggle in your config. To force to use the logger:
+  - `DISABLE_PRINT = true` → Suppresses all print calls
+  - `DISABLE_PRINT = false` → Allows print statements (default for development)
+
+  - 📜 **Audit Logs**: Capture every API request post-authentication, including method, path, user, and more.
+
+----
+
+- 📄 **Environment Configuration via JSON**
+  Custom environment variables are loaded from a centralized `env.json` file using a helper function (`load_env()`), enabling:
+  - Clean separation of config from code
+  - Easier environment overrides for local/dev/prod/Docker
+
+  These features offer maximum flexibility for multitenant deployments while maintaining centralized control.
+
+----
 
 - 📤 **Unified Response Format**: All API responses follow a consistent structure using a centralized `generate_response` utility.
 
-- 📦 **Inventory Modules**: Manage categories, suppliers, products, and stock movement records efficiently.
-
-- 📈 **Reports**: REST API endpoints for stock movement summaries and insights.
-
-- 📜 **Audit Logs**: Capture every API request post-authentication, including method, path, user, and more.
-
-- ⚡ **Tenant-aware Caching**: Support for in-memory and Memcached caching with tenant-specific keys for isolated performance.
+----
 
 - 🌐 **Tenant-aware Swagger/OpenAPI Docs**: Auto-generated API docs that dynamically reflect only the endpoints accessible to the current tenant.
 
-- 🐳 **Docker Support**: Full Docker setup with `Dockerfile`, `docker-compose.yml`, and volume mapping for multi-DB support (e.g. SQLite or pluggable RDBMS).
+----
+
+- 🐳 **Docker**: Full Docker setup with `Dockerfile`, `docker-compose.yml`, and volume mapping for multi-DB support (e.g. SQLite or pluggable RDBMS).
+
+----
 
 - 🧭 **Nginx as Reverse Proxy**: Production-ready Nginx configuration routing traffic to Gunicorn securely and efficiently.
+
+----
 
 ## 🛠️ Versioning Management Command
 
@@ -163,38 +206,6 @@ python manage.py ver CV
 | 🧾 Audit Logs       | `/api/audit-logs/`           | Track user actions and API requests                     |
 | 🏢 Tenant Mgmt      | `/api/tenant/`               | Manage tenant lifecycle and configurations              |
 | 🧪 Health Check     | `/api/health`                | Check service health status                             |
-
-## ⚙️ Configuration Highlights
-
-- 🔐 **Tenant-wise Configurable Authentication**
-  Each tenant can independently choose the authentication strategy:
-  - **JWT-based authentication**
-  - **Token-based authentication**
-  - 🔌 **Pluggable Design**: Easily extendable to integrate other mechanisms like **SAML SSO**, **OAuth2**, or **LDAP** as needed.
-
-- 🏢 **Tenant-wise Database Configuration**
-  Tenants can operate on:
-  - A **shared RDBMS database**, or
-  - **Isolated databases** per-tenant DB using a db-access layer
-  - 🔌 **Database Backend is Pluggable**: Easily extend support for **NoSQL databases** (e.g. MongoDB) or other RDBMS by abstracting DB access layer logic behind an interface layer
-
-- ⚡ **Pluggable Caching Layer**
-  A unified caching interface abstracts the underlying cache system, with current support for:
-  - **In-memory cache**
-  - **Memcached**
-  - 🔌 Additional backends (like Redis) can be plugged in easily by extending the interface
-
-- 🛑 **Print Statement Control**
-  Disable all `print()` statements project-wide (excluding virtual environments) using a single toggle in your config. To force to use the logger:
-  - `DISABLE_PRINT = true` → Suppresses all print calls
-  - `DISABLE_PRINT = false` → Allows print statements (default for development)
-
-- 📄 **Environment Configuration via JSON**
-  Custom environment variables are loaded from a centralized `env.json` file using a helper function (`load_env()`), enabling:
-  - Clean separation of config from code
-  - Easier environment overrides for local/dev/prod/Docker
-
-These features offer maximum flexibility for multitenant deployments while maintaining centralized control.
 
 ## 📚 API Documentation
 
