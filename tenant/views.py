@@ -9,7 +9,7 @@ from drf_spectacular.utils import extend_schema
 from base.views.base import BaseView, RetrieveView, CreateView
 
 from utils.constants import BASE_PATH
-from utils.swagger import (
+from utils.swagger.response import (
     responses_400,
     responses_404,
     responses_401,
@@ -20,19 +20,19 @@ from utils.swagger import (
 )
 
 from auth_user.constants import MethodEnum
-from authentication import get_default_authentication_class, register_permission
+
+from authentication.permission import register_permission
+from authentication.auth import get_default_authentication_class
 
 
-from .db_access import tenant_manager, tenant_configuration_manager
-from .serializers import (
+from tenant.utils.tenant_setup import NewTenantSetup
+from tenant.serializers.query import TenantQuerySerializer
+from tenant.db_access import tenant_manager, tenant_configuration_manager
+from tenant.serializers.tenant import (
     TenantSerializer,
-    TenantQuerySerializer,
     TenantConfigurationSerializer,
 )
-
-from .utils.tenant_setup import NewTenantSetup
-
-from .serializers.swagger.tenant import (
+from tenant.serializers.swagger.tenant import (
     TenantResponseSerializer,
     TenantListResponseSerializer,
     tenant_list_success_example,
@@ -41,16 +41,13 @@ from .serializers.swagger.tenant import (
     tenant_get_by_id_success_example,
     tenant_delete_success_example,
 )
-
-
-from .serializers.swagger.tenant_conf import (
+from tenant.serializers.swagger.tenant_conf import (
     tenant_config_create_success_example,
     tenant_config_get_by_id_success_example,
     TenantConfigurationResponseSerializer,
     TenantConfigurationDataSerializer,
 )
-
-from .serializers.swagger.tenant_details import (
+from tenant.serializers.swagger.tenant_details import (
     TenantDomainConfigResponseSerializer,
     tenant_domain_config_get_by_id_success_example,
 )

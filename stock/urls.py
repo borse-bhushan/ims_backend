@@ -5,7 +5,7 @@ Stock URL routing module.
 from django.urls import path
 
 
-from .views import StockViewSet
+from stock.views import StockViewSet
 
 urlpatterns = [
     path(

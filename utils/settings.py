@@ -5,7 +5,7 @@ This module is used to read settings from the Django settings file.
 from rest_framework import status
 from django.conf import settings as django_settings
 
-from utils.exceptions import SettingKeyError
+from utils.exceptions.exceptions import SettingKeyError
 
 
 class Empty:

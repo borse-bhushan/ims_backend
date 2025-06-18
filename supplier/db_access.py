@@ -7,7 +7,7 @@ It provides methods for creating, updating, deleting, and retrieving Supplier re
 
 from base.db_access import manager
 
-from .models import Supplier
+from supplier.models import Supplier
 
 
 class SupplierManager(manager.Manager[Supplier]):

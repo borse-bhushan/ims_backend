@@ -5,12 +5,17 @@ for updating objects based on query parameters. It raises a 404 error if the obj
 
 from rest_framework import serializers, status
 
-from ..constants import PATCH, PUT
 
-from base.db_access import Manager
 from utils.messages import error, success
 from utils.response import generate_response
-from utils.exceptions import NoDataFoundError, ValidationError, BadRequestError
+from utils.exceptions.exceptions import (
+    NoDataFoundError,
+    ValidationError,
+    BadRequestError,
+)
+
+from base.constants import PATCH, PUT
+from base.db_access.manager import Manager
 
 
 class UpdateView:

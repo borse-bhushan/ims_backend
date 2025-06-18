@@ -8,9 +8,10 @@ from drf_spectacular.utils import extend_schema
 from base.views.base import BaseView
 
 from auth_user.constants import MethodEnum
-from authentication import get_authentication_classes, register_permission
+from authentication.permission import register_permission
+from authentication.auth import get_authentication_classes
 
-from utils.swagger import (
+from utils.swagger.response import (
     responses_400,
     responses_404,
     responses_401,
@@ -20,9 +21,10 @@ from utils.swagger import (
     SuccessResponseSerializer,
 )
 
-from .db_access import supplier_manager
-from .serializers import SupplierQuerySerializer, SupplierSerializer
-from .serializers.swagger import (
+from supplier.db_access import supplier_manager
+from supplier.serializers.supplier import SupplierSerializer
+from supplier.serializers.query import SupplierQuerySerializer
+from supplier.serializers.swagger import (
     SupplierResponseSerializer,
     SupplierListResponseSerializer,
     supplier_list_success_example,

@@ -11,8 +11,8 @@ from utils.exceptions import codes
 from tenant.db_access import tenant_manager
 from tenant.utils.tenant_conf import get_tenant_db_name
 
-from ..constants import RoleEnum
-from ..db_access import user_manager
+from auth_user.constants import RoleEnum
+from auth_user.db_access import user_manager
 
 
 class UserSerializer(serializers.Serializer):
@@ -63,7 +63,7 @@ class UserCompanyAdminSerializer(UserSerializer, serializers.Serializer):
         if value != RoleEnum.COMPANY_ADMIN:
             raise serializers.ValidationError(
                 code=codes.INVALID_CHOICE,
-                detail=error.ALLOWD_ROLE.format(roles=RoleEnum.COMPANY_ADMIN.value),
+                detail=error.ALLOWED_ROLE.format(roles=RoleEnum.COMPANY_ADMIN.value),
             )
         return value
 

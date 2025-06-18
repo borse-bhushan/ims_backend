@@ -2,7 +2,6 @@
 Middleware to handle exceptions globally in Django Rest Framework.
 """
 
-import logging
 import traceback
 
 from rest_framework import status
@@ -10,10 +9,10 @@ from django.utils.deprecation import MiddlewareMixin
 
 from utils.messages import error
 from utils.exceptions import codes
-from utils.logger.logger import log_msg
+from utils.logger import log_msg, logging
 from utils.response import generate_response
 from utils.ser_val_err_format import format_serializer_errors
-from utils.exceptions import (
+from utils.exceptions.exceptions import (
     NoDataFoundError,
     ValidationError,
     BadRequestError,

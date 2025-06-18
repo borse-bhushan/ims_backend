@@ -8,9 +8,9 @@ from rest_framework import serializers
 
 from utils.messages import error
 from utils.exceptions import codes
-from utils.validators import validate_unique
+from utils.validators.unique import validate_unique
 
-from ..db_access import product_manager
+from product.db_access import product_manager
 from category.db_access import category_manager
 
 

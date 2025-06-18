@@ -3,7 +3,7 @@ AuditLogs URL routing module.
 """
 
 from django.urls import path
-from .views import AuditLogViewSet
+from audit_logs.views import AuditLogViewSet
 
 
 urlpatterns = [

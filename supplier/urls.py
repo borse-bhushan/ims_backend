@@ -5,7 +5,7 @@ Supplier URL routing module.
 from django.urls import path
 
 
-from .views import SupplierViewSet
+from supplier.views import SupplierViewSet
 
 urlpatterns = [
     path(

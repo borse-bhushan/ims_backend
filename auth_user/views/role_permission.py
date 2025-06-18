@@ -5,7 +5,7 @@ ViewSet for handling role-permission endpoints.
 from rest_framework import viewsets, status
 from drf_spectacular.utils import extend_schema
 
-from utils.swagger import (
+from utils.swagger.response import (
     responses_400,
     responses_404,
     responses_401,
@@ -16,15 +16,20 @@ from utils.swagger import (
 )
 from utils.messages import success
 from utils.response import generate_response
-from utils.exceptions import NoDataFoundError
+from utils.exceptions.exceptions import NoDataFoundError
+
+from base.views.list import ListView
+from base.views.create import CreateView
+from base.views.delete import DeleteView
+
+from authentication.permission import register_permission
+from authentication.auth import get_authentication_classes
+
+
 from auth_user.constants import MethodEnum
-from base.views import CreateView, DeleteView, ListView
-from authentication import get_authentication_classes, register_permission
-
-
-from ..serializers import RolePermissionSerializer
-from ..db_access import role_permission_mapping_manager
-from ..swagger import (
+from auth_user.db_access import role_permission_mapping_manager
+from auth_user.serializers.role_permission import RolePermissionSerializer
+from auth_user.swagger.role_permission import (
     RolePermissionResponseSerializer,
     RolePermissionListResponseSerializer,
     role_permission_create_example,

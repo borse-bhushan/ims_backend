@@ -9,7 +9,7 @@ from utils.functions import get_current_datetime
 
 from auth_user.db_access import token_manager
 
-from .exception import UnauthorizedException
+from authentication.exception import UnauthorizedException
 
 
 class TokenAuthentication(BaseAuthentication):

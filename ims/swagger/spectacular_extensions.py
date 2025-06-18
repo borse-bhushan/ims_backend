@@ -34,3 +34,7 @@ class CustomTokenAuthScheme(OpenApiAuthenticationExtension):
             "scheme": "bearer",
             "bearerFormat": "Token",  # or JWT, depending on your format
         }
+
+
+def get_token_auth_schema():
+    return CustomTokenAuthScheme

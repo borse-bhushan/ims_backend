@@ -65,11 +65,11 @@ THIRD_PARTY_APPS = ["rest_framework", "drf_spectacular", "corsheaders"]
 INSTALLED_APPS += THIRD_PARTY_APPS
 
 MY_APPS = [
+    "audit_logs",
     "tenant",
     "auth_user",
     "monitor",
     "cmds",
-    "audit_logs",
     "category",
     "product",
     "supplier",

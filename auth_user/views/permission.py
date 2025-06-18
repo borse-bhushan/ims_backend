@@ -5,16 +5,15 @@ Permission ViewSet for handling permission endpoints.
 from rest_framework import viewsets
 from drf_spectacular.utils import extend_schema
 
-
-from base.views import CreateView, ListView
-from authentication import (
+from base.views.list import ListView
+from base.views.create import CreateView
+from authentication.auth import (
     get_authentication_classes,
-    register_permission,
     get_default_authentication_class,
 )
+from authentication.permission import register_permission
 
-
-from utils.swagger import (
+from utils.swagger.response import (
     responses_404,
     responses_401,
     responses_404_example,
@@ -25,12 +24,11 @@ from utils.swagger import (
 
 from tenant.utils.tenant_conf import get_tenant_db_name
 
-
 from auth_user.constants import MethodEnum
 from auth_user.db_access import permission_manager
 from auth_user.utils.permission import load_permission
-from auth_user.serializers import PermissionListQuerySerializer
-from auth_user.swagger import (
+from auth_user.serializers.permission_query import PermissionListQuerySerializer
+from auth_user.swagger.permission import (
     PermissionListResponseSerializer,
     permission_list_success_example,
     permission_create_success_example,

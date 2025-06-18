@@ -7,7 +7,7 @@ It provides methods for creating, updating, deleting, and retrieving Product rec
 
 from base.db_access import manager
 
-from .models import Product
+from product.models import Product
 
 
 class ProductManager(manager.Manager[Product]):

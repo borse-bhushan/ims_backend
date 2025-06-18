@@ -3,10 +3,11 @@ This module contains the BaseGetView class, which provides a base implementation
 for retrieving an object based on its ID. It raises a 404 error if the object is not found.
 """
 
-from base import constants
-from base.db_access import Manager
-from utils.exceptions import NoDataFoundError
 from utils.response import generate_response
+from utils.exceptions.exceptions import NoDataFoundError
+
+from base import constants
+from base.db_access.manager import Manager
 
 
 class RetrieveView:

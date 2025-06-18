@@ -4,9 +4,9 @@ Serializer for Category.
 
 from rest_framework import serializers
 
-from utils.validators import validate_unique
+from utils.validators.unique import validate_unique
 
-from ..db_access import category_manager
+from category.db_access import category_manager
 
 
 class CategorySerializer(serializers.Serializer):

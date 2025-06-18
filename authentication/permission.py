@@ -6,7 +6,8 @@ This module provides a decorator to register and check user permissions
 from functools import wraps
 
 from utils.messages import error
-from utils.exceptions import codes, PermissionDenied, BadRequestError
+from utils.exceptions import codes
+from utils.exceptions.exceptions import codes, PermissionDenied, BadRequestError
 
 from audit_logs.utils.audit_log import create_audit_log_entry
 

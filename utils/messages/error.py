@@ -3,11 +3,12 @@ Common error message constants used throughout PCTMs platform.
 """
 
 # ERROR
+
 BAD_REQUEST: str = "Invalid data."
 ALREADY_EXIST: str = "Already Exist."
 NO_DATA_FOUND: str = "No Data Found."
 INVALID_TENANT: str = "Invalid Tenant."
-ALLOWD_ROLE: str = "Only {roles} allowed."
+ALLOWED_ROLE: str = "Only {roles} allowed."
 WRONG_CREDENTIALS: str = "Wrong Credentials."
 PERMISSION_DENIED: str = "Permission Denied."
 ALREADY_IN_USED: str = "The record is being used."

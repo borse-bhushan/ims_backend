@@ -1,6 +1,6 @@
 from utils.constants import SeverityEnum
 
-from ..db_access import notification_manager, user_notification_manager
+from notification.db_access import notification_manager, user_notification_manager
 
 
 class SendNotification:
@@ -45,7 +45,6 @@ class SendNotification:
         """
         Send the notification.
         """
-
 
         notification = self.__create_notification()
         for recipient in recipient_list:

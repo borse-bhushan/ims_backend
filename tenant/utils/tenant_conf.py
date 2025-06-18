@@ -3,11 +3,13 @@ Check if a tenant is using a shared database configuration.
 """
 
 from utils import settings
+from utils.messages import error
+from utils.exceptions.exceptions import BadRequestError
 
-from ..constants import DatabaseStrategyEnum
-from .tenant_setup import set_database_to_global_settings
-from .helpers import get_tenant_details_from_request_thread
-from ..db_access import tenant_configuration_manager, tenant_manager
+from tenant.constants import DatabaseStrategyEnum
+from tenant.utils.tenant_setup import set_database_to_global_settings
+from tenant.utils.helpers import get_tenant_details_from_request_thread
+from tenant.db_access import tenant_configuration_manager, tenant_manager
 
 DEFAULT = "default"
 
@@ -57,6 +59,9 @@ def get_tenant_db_name(tenant):
             "tenant_id": _tenant.tenant_id,
         }
     )
+
+    if not tenant_config_obj:
+        raise BadRequestError(error.TENANT_CONFIGURATION_NOT_FOUND)
 
     is_shared = tenant_config_obj.database_strategy == DatabaseStrategyEnum.SHARED
     if not is_shared:

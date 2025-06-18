@@ -2,11 +2,9 @@
 This file is to update the version of the application.
 """
 
-import logging
-
 from django.core.management.base import BaseCommand, CommandError
 
-from utils.logger import logger
+from utils import logger
 from utils import version as v_action, constants
 
 
@@ -84,7 +82,7 @@ class Command(BaseCommand):
 
         n_v = v_action.get_version_str()
 
-        logger.log_msg(logging.INFO, f"Version is updated  [{o_v}  >>  {n_v}]")
+        logger.log_msg(logger.logging.INFO, f"Version is updated  [{o_v}  >>  {n_v}]")
         return ""
 
     def add_arguments(self, parser):

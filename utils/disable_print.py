@@ -8,7 +8,7 @@ import traceback
 from rest_framework import status
 
 from utils.messages import error
-from utils.exceptions import CommonError
+from utils.exceptions.exceptions import CommonError
 
 
 def disable_print():

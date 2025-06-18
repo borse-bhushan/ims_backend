@@ -6,7 +6,7 @@ from utils import settings
 from auth_user.db_access import user_manager
 from tenant.utils.helpers import is_request_tenant_aware
 
-from .exception import UnauthorizedException
+from authentication.exception import UnauthorizedException
 
 
 class JWTAuthentication(BaseAuthentication):

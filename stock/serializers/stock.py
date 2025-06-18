@@ -12,8 +12,8 @@ from utils.exceptions import codes
 from product.db_access import product_manager
 from supplier.db_access import supplier_manager
 
-from ..db_access import stock_manager
-from ..constants import StockMovementEnum
+from stock.db_access import stock_manager
+from stock.constants import StockMovementEnum
 
 
 class StockSerializer(serializers.Serializer):

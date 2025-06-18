@@ -5,7 +5,7 @@ It inherits from the BaseModel class which contains common fields for all models
 
 from django.db import models
 from utils.functions import get_uuid
-from base.db_models import BaseModel
+from base.db_models.model import BaseModel
 
 
 class Category(BaseModel, models.Model):

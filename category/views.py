@@ -8,9 +8,11 @@ from drf_spectacular.utils import extend_schema
 from base.views.base import BaseView
 
 from auth_user.constants import MethodEnum
-from authentication import get_authentication_classes, register_permission
 
-from utils.swagger import (
+from authentication.permission import register_permission
+from authentication.auth import get_authentication_classes
+
+from utils.swagger.response import (
     responses_400,
     responses_404,
     responses_401,
@@ -21,9 +23,10 @@ from utils.swagger import (
 )
 
 
-from .db_access import category_manager
-from .serializers import CategorySerializer, CategoryQuerySerializer
-from .serializers.swagger import (
+from category.db_access import category_manager
+from category.serializers.category import CategorySerializer
+from category.serializers.query import CategoryQuerySerializer
+from category.serializers.swagger import (
     CategoryResponseSerializer,
     CategoryListResponseSerializer,
     category_create_success_example,

@@ -18,8 +18,8 @@ from auth_user.db_access import user_manager
 
 from utils.messages import notifications
 
-from .models import Stock
-from .constants import StockMovementEnum
+from stock.models import Stock
+from stock.constants import StockMovementEnum
 
 
 class StockManager(manager.Manager[Stock]):
