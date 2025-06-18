@@ -6,7 +6,7 @@ It provides methods for retrieving audit log records.
 """
 
 from base.db_access import manager
-from .models import AuditLogs
+from audit_logs.models import AuditLogs
 
 
 class AuditLogsManager(manager.Manager[AuditLogs]):

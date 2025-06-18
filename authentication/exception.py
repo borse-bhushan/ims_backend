@@ -6,7 +6,7 @@ from rest_framework import status
 
 from utils.messages import error
 from utils.exceptions import codes
-from base.exceptions import BaseExc
+from base.exceptions.exception import BaseExc
 
 
 class UnauthorizedException(BaseExc):

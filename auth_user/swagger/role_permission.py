@@ -11,7 +11,7 @@ from utils.swagger.common_swagger_functions import (
     get_delete_success_example,
 )
 
-from ..constants import RoleEnum
+from auth_user.constants import RoleEnum
 
 
 class RolePermissionSwaggerSerializer(serializers.Serializer):

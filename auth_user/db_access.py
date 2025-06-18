@@ -3,7 +3,7 @@ Database access layer for the authentication user module.
 """
 
 from base.db_access import manager
-from .models import User, Token, Permission, RolePermissionMapping
+from auth_user.models import User, Token, Permission, RolePermissionMapping
 
 
 class UserManager(manager.Manager[User]):

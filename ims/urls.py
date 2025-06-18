@@ -4,17 +4,18 @@ URL Configuration for project
 
 from django.urls import path, include
 from drf_spectacular.views import (
-    SpectacularAPIView,
     SpectacularRedocView,
     SpectacularSwaggerView,
 )
 
 
 from utils.constants import BASE_PATH
-from utils.exceptions import error_404
+from utils.exceptions.error_404 import error_404
 from utils.tenant_aware_path import add_to_tenant_aware_excluded_path_list
 
-from .swagger import get_token_auth_schema, TenantAwareSchemaView
+from ims.views import choices_api
+from ims.swagger.view import TenantAwareSchemaView
+from ims.swagger.spectacular_extensions import get_token_auth_schema
 
 get_token_auth_schema()
 
@@ -41,6 +42,12 @@ urlpatterns = [
     # Monitoring API
     path(BASE_PATH, include("monitor.urls")),
     # Swagger Documentation
+    path(
+        add_to_tenant_aware_excluded_path_list(
+            BASE_PATH + "choices", add_base_path=False
+        ),
+        choices_api.ConstantsAPIView.as_view({"get": "get_constants"}),
+    ),
     path(
         add_to_tenant_aware_excluded_path_list(
             "api/schema", method_list=["GET"], add_base_path=False

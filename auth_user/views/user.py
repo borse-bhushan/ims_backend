@@ -5,14 +5,18 @@ User ViewSet for handling user endpoints.
 from rest_framework import viewsets
 from drf_spectacular.utils import extend_schema
 
-from auth_user.constants import MethodEnum
-from base.views import BaseView, RetrieveView, CreateView, ListView
-from authentication import get_authentication_classes, register_permission
+from base.views.base import BaseView
+from base.views.list import ListView
+from base.views.create import CreateView
+from base.views.retrieve import RetrieveView
+
+from authentication.permission import register_permission
+from authentication.auth import get_authentication_classes
 
 from tenant.utils.tenant_conf import get_tenant_db_name
 
 from utils.response import generate_response
-from utils.swagger import (
+from utils.swagger.response import (
     responses_400,
     responses_404,
     responses_401,
@@ -22,13 +26,11 @@ from utils.swagger import (
     SuccessResponseSerializer,
 )
 
-from ..db_access import user_manager
-from ..serializers import (
-    UserSerializer,
-    UserCompanyAdminListQuerySerializer,
-    UserCompanyAdminSerializer,
-)
-from ..swagger import (
+from auth_user.constants import MethodEnum
+from auth_user.db_access import user_manager
+from auth_user.serializers.user_query import UserCompanyAdminListQuerySerializer
+from auth_user.serializers.user import UserSerializer, UserCompanyAdminSerializer
+from auth_user.swagger.user import (
     UserResponseSerializer,
     UserListResponseSerializer,
     user_create_success_example,

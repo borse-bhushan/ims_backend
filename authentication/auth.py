@@ -6,7 +6,7 @@ import importlib
 
 from utils import settings
 from utils.messages import error
-from utils.exceptions import BadRequestError
+from utils.exceptions.exceptions import BadRequestError
 
 from tenant.constants import AuthenticationTypeEnum
 from tenant.utils.helpers import is_request_tenant_aware

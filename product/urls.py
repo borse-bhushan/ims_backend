@@ -5,7 +5,7 @@ Product URL routing module.
 from django.urls import path
 
 
-from .views import ProductViewSet
+from product.views import ProductViewSet
 
 urlpatterns = [
     path(

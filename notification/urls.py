@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import NotificationViewSet
+from notification.views import NotificationViewSet
 
 
 urlpatterns = [

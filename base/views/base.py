@@ -4,7 +4,11 @@ This class combines the functionality of CreateView, ListView,
 RetrieveView, UpdateView, and DeleteView to provide a standard implementation
 """
 
-from base.views import CreateView, ListView, RetrieveView, UpdateView, DeleteView
+from base.views.list import ListView
+from base.views.create import CreateView
+from base.views.update import UpdateView
+from base.views.delete import DeleteView
+from base.views.retrieve import RetrieveView
 
 
 class BaseView(CreateView, ListView, RetrieveView, UpdateView, DeleteView):

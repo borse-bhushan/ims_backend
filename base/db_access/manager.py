@@ -11,7 +11,7 @@ from django.db.models import Q, F, Model, Sum
 from utils.cache import cache
 from utils.messages import error
 from utils.pagination import Pagination
-from utils.exceptions import CommonError
+from utils.exceptions.exceptions import CommonError
 
 from tenant.utils.helpers import (
     is_request_tenant_aware,

@@ -92,7 +92,7 @@ class AttachSubdomainToRequestMiddleware:
         except Exception as err:
             import traceback
 
-            log_msg(logging.ERROR, traceback.format_exc(), err)
+            log_msg(logging.ERROR, str(traceback.format_exc()), str(err))
 
             return generate_response(
                 create_json_response=True,

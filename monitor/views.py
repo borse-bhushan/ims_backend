@@ -3,15 +3,18 @@ This file contains the monitoring API which will return the CPU, RAM, DISK infor
 """
 
 import psutil
+
 from rest_framework.views import APIView
 from drf_spectacular.utils import extend_schema
 
-from monitor import swagger
-
 from auth_user.constants import MethodEnum
-from utils.response import generate_response
-from authentication import get_authentication_classes, register_permission
 
+from utils.response import generate_response
+
+from authentication.permission import register_permission
+from authentication.auth import get_authentication_classes
+
+from monitor import swagger
 
 MODULE = "Monitor"
 
@@ -100,7 +103,9 @@ class MonitorView(APIView):
         responses={"200": swagger.SysInfoResponseSerializer()},
         tags=[MODULE],
     )
-    @register_permission(MODULE, MethodEnum.GET, f"Get {MODULE} information", create_permission=False)
+    @register_permission(
+        MODULE, MethodEnum.GET, f"Get {MODULE} information", create_permission=False
+    )
     def get(self, *_):
         """
         This API will return the system health details.

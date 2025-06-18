@@ -6,10 +6,10 @@ from rest_framework import serializers
 
 from utils.messages import error
 from utils.exceptions import codes
-from utils.validators import validate_unique
+from utils.validators.unique import validate_unique
 
-from ..db_access import tenant_manager
-from ..constants import AuthenticationTypeEnum, DatabaseStrategyEnum
+from tenant.db_access import tenant_manager
+from tenant.constants import AuthenticationTypeEnum, DatabaseStrategyEnum
 
 
 class TenantSerializer(serializers.Serializer):

@@ -3,11 +3,11 @@ from rest_framework import serializers
 from utils.messages import error
 from utils.exceptions import codes
 
-from base.serializers import QuerySerializer
+from base.serializers.query import QuerySerializer
 
 from tenant.db_access import tenant_manager
 
-from ..constants import RoleEnum
+from auth_user.constants import RoleEnum
 
 
 class UserListQuerySerializer(serializers.Serializer):

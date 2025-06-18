@@ -10,15 +10,16 @@ from drf_spectacular.utils import extend_schema
 
 from utils.messages import success
 from utils.response import generate_response
-from utils.exceptions import ValidationError, NoDataFoundError
+from utils.exceptions.exceptions import ValidationError, NoDataFoundError
 
 from auth_user.constants import MethodEnum
 from auth_user.db_access import user_manager
 
 from base.views.base import UpdateView, ListView
-from authentication import register_permission, get_authentication_classes
+from authentication.permission import register_permission
+from authentication.auth import get_authentication_classes
 
-from utils.swagger import (
+from utils.swagger.response import (
     responses_400,
     responses_404,
     responses_401,
@@ -28,16 +29,16 @@ from utils.swagger import (
 )
 
 
-from .serializers.swagger import (
+from notification.serializers.swagger import (
     MarkNotificationResponseSerializer,
     NotificationListResponseSerializer,
     notification_list_success_example,
-    mark_read_patch_success_example
+    mark_read_patch_success_example,
 )
 
 
-from .serializers import NotificationMarkAsReadSerializer
-from .db_access import user_notification_manager, notification_manager
+from notification.serializers.notification import NotificationMarkAsReadSerializer
+from notification.db_access import user_notification_manager, notification_manager
 
 MODULE = "Notification"
 
@@ -115,7 +116,6 @@ class NotificationViewSet(UpdateView, ListView, viewsets.ViewSet):
     @register_permission(MODULE, MethodEnum.GET, f"Get {MODULE}")
     def list_all(self, request, *args, **kwargs):
         return super().list_all(request, *args, **kwargs)
-
 
     @extend_schema(
         responses={

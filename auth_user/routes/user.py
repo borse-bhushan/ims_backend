@@ -23,7 +23,11 @@ Note:
 from django.urls import path
 from utils.tenant_aware_path import add_to_tenant_aware_excluded_path_list
 
-from auth_user.views import UserViewSet, UserProfileViewSet, UserCompanyAdminsViewSet
+from auth_user.views.user import (
+    UserViewSet,
+    UserProfileViewSet,
+    UserCompanyAdminsViewSet,
+)
 
 urlpatterns = [
     path(

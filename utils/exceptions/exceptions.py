@@ -6,10 +6,10 @@ import json
 
 from rest_framework import status
 
-from base.exceptions import BaseExc
+from base.exceptions.exception import BaseExc
 
-from . import codes
-from ..messages import error
+from utils.messages import error
+from utils.exceptions import codes
 
 
 class SettingKeyError(BaseExc):

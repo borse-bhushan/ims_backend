@@ -9,10 +9,10 @@ validate_unique(User.objects, {"email": "test@example.com"})
 
 from rest_framework import serializers
 
-from base.db_access import Manager
+from base.db_access.manager import Manager
 
-from ..messages import error
-from ..exceptions import codes
+from utils.messages import error
+from utils.exceptions import codes
 
 
 def validate_unique(model_manager: Manager, query: dict):

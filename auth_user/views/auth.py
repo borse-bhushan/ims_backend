@@ -8,12 +8,12 @@ import secrets
 from rest_framework import status, viewsets
 from drf_spectacular.utils import extend_schema
 
-from base.views import CreateView, DeleteView
+from base.views.delete import DeleteView
+from base.views.create import CreateView
 
-from auth_user.constants import MethodEnum
-
+from authentication.permission import register_permission
+from authentication.auth import get_authentication_classes
 from authentication.exception import WrongCredentialsException
-from authentication import get_authentication_classes, register_permission
 
 from audit_logs.utils.audit_log import create_audit_log_entry
 
@@ -22,20 +22,19 @@ from tenant.utils.helpers import is_request_tenant_aware
 from tenant.db_access import tenant_configuration_manager
 
 from utils.messages import success, error
-from utils.response.response import generate_response
+from utils.response import generate_response
 from utils import functions as common_functions, settings
-from utils.exceptions import BadRequestError, ValidationError
-from utils.swagger import (
+from utils.exceptions.exceptions import BadRequestError, ValidationError
+from utils.swagger.response import (
     responses_400,
     responses_401,
     responses_400_example,
 )
 
-
-from ..constants import RoleEnum
-from ..serializers import LoginSerializer
-from ..db_access import token_manager, user_manager
-from ..serializers.swagger import (
+from auth_user.constants import RoleEnum, MethodEnum
+from auth_user.serializers.auth import LoginSerializer
+from auth_user.db_access import token_manager, user_manager
+from auth_user.serializers.swagger import (
     LoginResponseSerializer,
     LogoutResponseSerializer,
     login_success_example,

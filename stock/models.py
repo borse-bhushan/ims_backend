@@ -4,7 +4,7 @@ It inherits from the BaseModel class which contains common fields for all models
 """
 
 from django.db import models
-from base.db_models import BaseModel
+from base.db_models.model import BaseModel
 from stock.constants import StockMovementEnum
 from utils.functions import get_uuid, create_stock_reference
 

@@ -6,7 +6,7 @@ from django.urls import path
 
 from utils.tenant_aware_path import add_to_tenant_aware_excluded_path_list
 
-from .views import TenantViewSet, TenantDetailsViewSet, TenantConfigurationViewSet
+from tenant.views import TenantViewSet, TenantDetailsViewSet, TenantConfigurationViewSet
 
 urlpatterns = [
     path(

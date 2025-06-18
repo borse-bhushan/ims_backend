@@ -14,8 +14,8 @@ from django.contrib.auth.models import AbstractBaseUser
 from utils.functions import get_uuid
 from base.db_models.model import BaseModel
 
-from .constants import RoleEnum
-from .constants import MethodEnum
+from auth_user.constants import RoleEnum
+from auth_user.constants import MethodEnum
 
 
 class User(BaseModel, AbstractBaseUser):

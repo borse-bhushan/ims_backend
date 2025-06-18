@@ -7,7 +7,7 @@ It provides methods for creating, updating, deleting, and retrieving Category re
 
 from base.db_access import manager
 
-from .models import Category
+from category.models import Category
 
 
 class CategoryManager(manager.Manager[Category]):

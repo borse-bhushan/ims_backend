@@ -4,9 +4,9 @@ Stock Query Serializer
 
 from rest_framework import serializers
 
-from base.serializers import QuerySerializer
+from base.serializers.query import QuerySerializer
 
-from ..constants import StockMovementEnum
+from stock.constants import StockMovementEnum
 
 
 class StockQuerySerializer(QuerySerializer):

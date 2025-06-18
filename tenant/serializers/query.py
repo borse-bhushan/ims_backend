@@ -4,7 +4,7 @@ Tenant Query Serializer
 
 from rest_framework import serializers
 
-from base.serializers import QuerySerializer
+from base.serializers.query import QuerySerializer
 
 
 class TenantQuerySerializer(QuerySerializer):

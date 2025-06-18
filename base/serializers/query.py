@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from ..constants import DEFAULT_PAGE_SIZE, DEFAULT_PAGE_NUMBER
+from base.constants import DEFAULT_PAGE_SIZE, DEFAULT_PAGE_NUMBER
 
 
 class QuerySerializer(serializers.Serializer):

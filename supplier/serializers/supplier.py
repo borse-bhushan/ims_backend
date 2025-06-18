@@ -4,9 +4,9 @@ Serializer for Supplier.
 
 from rest_framework import serializers
 
-from utils.validators import validate_unique
+from utils.validators.unique import validate_unique
 
-from ..db_access import supplier_manager
+from supplier.db_access import supplier_manager
 
 
 class SupplierSerializer(serializers.Serializer):

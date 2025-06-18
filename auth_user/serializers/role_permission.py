@@ -8,8 +8,8 @@ from rest_framework import serializers
 from utils.messages import error
 from utils.exceptions import codes
 
-from ..db_access import permission_manager, role_permission_mapping_manager
-from ..constants import RoleEnum
+from auth_user.constants import RoleEnum
+from auth_user.db_access import permission_manager, role_permission_mapping_manager
 
 
 class RolePermissionSerializer(serializers.Serializer):

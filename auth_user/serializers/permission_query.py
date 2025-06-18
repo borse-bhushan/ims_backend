@@ -4,8 +4,8 @@ Serializer for querying permission lists based on tenant ID.
 
 from rest_framework import serializers
 
-from utils.exceptions import codes
 from utils.messages import error
+from utils.exceptions import codes
 
 from tenant.db_access import tenant_manager
 

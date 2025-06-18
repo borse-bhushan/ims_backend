@@ -7,9 +7,9 @@ from authentication.permission import register_permission
 from authentication.auth import get_authentication_classes
 
 from utils.response import generate_response
-from utils.exceptions import ValidationError
+from utils.exceptions.exceptions import ValidationError
 
-from utils.swagger import (
+from utils.swagger.response import (
     responses_404,
     responses_401,
     responses_404_example,
@@ -20,8 +20,8 @@ from utils.swagger import (
 from stock.db_access import stock_manager
 from product.db_access import product_manager
 
-from .serializers import StockSummaryQuerySerializer
-from .serializers.stock_summery_swag import (
+from reports.serializers.stock_summary import StockSummaryQuerySerializer
+from reports.serializers.stock_summery_swag import (
     ReportListResponseSerializer,
     report_list_success_example,
 )

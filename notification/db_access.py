@@ -5,7 +5,7 @@ It defines managers for the Notification and UserNotification models.
 
 from base.db_access import manager
 
-from .models import Notification, UserNotification
+from notification.models import Notification, UserNotification
 
 
 class NotificationManager(manager.Manager[Notification]):

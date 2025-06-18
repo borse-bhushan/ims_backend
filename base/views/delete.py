@@ -1,10 +1,12 @@
 from rest_framework import status
 
-from base import constants
-from base.db_access import Manager
+
 from utils.messages import success
 from utils.response import generate_response
-from utils.exceptions import NoDataFoundError
+from utils.exceptions.exceptions import NoDataFoundError
+
+from base import constants
+from base.db_access.manager import Manager
 
 
 class DeleteView:

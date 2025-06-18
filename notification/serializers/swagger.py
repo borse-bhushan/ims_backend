@@ -4,7 +4,7 @@ Notification Serializer and List Swagger Example
 
 from rest_framework import serializers
 from drf_spectacular.utils import OpenApiExample
-from utils.swagger import PaginationSerializer
+from utils.swagger.response import PaginationSerializer
 from utils.swagger.common_swagger_functions import (
     get_list_success_example,
     get_update_success_example,

@@ -5,14 +5,13 @@ This module provides a base view class for handling create operations in a IMS a
 from django.db import models
 from rest_framework import status, serializers, parsers
 
-from base import constants
-from base.db_access import Manager
-
 
 from utils.messages import success
 from utils.response import generate_response
-from utils.exceptions import ValidationError
-from utils import functions as common_functions
+from utils.exceptions.exceptions import ValidationError
+
+from base import constants
+from base.db_access.manager import Manager
 
 
 class CreateView:

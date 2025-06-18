@@ -12,6 +12,7 @@ All responses follow the structure:
 
 from rest_framework import serializers
 from drf_spectacular.utils import OpenApiExample
+
 from utils.messages import error
 from utils.exceptions import codes
 

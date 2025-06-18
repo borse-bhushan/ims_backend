@@ -7,22 +7,26 @@ CRUD operations for managing audit logs.
 from rest_framework import viewsets
 from drf_spectacular.utils import extend_schema
 
-from base.views.base import RetrieveView, ListView
+from base.views.list import ListView
+from base.views.retrieve import RetrieveView
+
 from auth_user.constants import MethodEnum
-from authentication import get_authentication_classes, register_permission
-from utils.swagger import (
+from authentication.permission import register_permission
+from authentication.auth import get_authentication_classes
+
+from utils.swagger.response import (
     responses_404,
     responses_401,
     responses_404_example,
     responses_401_example,
 )
-from .serializers import (
+from audit_logs.serializers.swagger import (
     AuditLogsListResponseSerializer,
     audit_get_by_id_success_example,
     audit_list_success_example,
     AuditLogsResponseSerializer,
 )
-from .db_access import audit_logs_manager
+from audit_logs.db_access import audit_logs_manager
 
 
 MODULE_NAME = "Audit Logs"

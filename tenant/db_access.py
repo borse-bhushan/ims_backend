@@ -7,7 +7,7 @@ It provides methods for creating, updating, deleting, and retrieving Tenant reco
 
 from base.db_access import manager
 
-from .models import Tenant, TenantConfiguration
+from tenant.models import Tenant, TenantConfiguration
 
 
 class TenantManager(manager.Manager[Tenant]):

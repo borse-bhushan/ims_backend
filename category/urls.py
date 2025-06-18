@@ -5,7 +5,7 @@ Category URL routing module.
 from django.urls import path
 
 
-from .views import CategoryViewSet
+from category.views import CategoryViewSet
 
 urlpatterns = [
     path(

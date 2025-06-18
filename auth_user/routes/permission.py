@@ -24,7 +24,7 @@ from django.urls import path
 from utils.tenant_aware_path import add_to_tenant_aware_excluded_path_list
 
 from auth_user.constants import MethodEnum
-from auth_user.views import PermissionViewSet, ListCreatePermissionViewSet
+from auth_user.views.permission import PermissionViewSet, ListCreatePermissionViewSet
 
 urlpatterns = [
     path(

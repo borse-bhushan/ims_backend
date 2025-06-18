@@ -4,11 +4,12 @@ This module defines the Notification model for the system.
 
 from django.db import models
 
-from base.db_models import BaseModel
 from utils.functions import get_uuid
 from utils.constants import SeverityEnum
 
-from .constants import NotificationTypeEnum
+from base.db_models.model import BaseModel
+
+from notification.constants import NotificationTypeEnum
 
 
 class Notification(BaseModel, models.Model):
