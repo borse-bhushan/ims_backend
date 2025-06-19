@@ -1,0 +1,45 @@
+import secrets
+
+from auth_user.constants import RoleEnum
+from auth_user.db_access import user_manager, token_manager
+
+
+def create_test_user(role_id=None):
+    """
+    Logs in a user via API and returns an authenticated APIClient.
+    """
+    _user_manager = user_manager
+    if role_id is None:
+        _user_manager = user_manager.disable_tenant_aware()
+
+    user = _user_manager.create(
+        data={
+            "last_name": "Borse",
+            "first_name": "Bhushan",
+            "phone_number": "9878786565",
+            "role_id": RoleEnum.SUPER_ADMIN,
+            "email": f"test{secrets.token_hex(4)}@gmail.com",
+        }
+    )
+
+    user.set_password("1234")
+    user.save()
+
+    return user.to_dict()
+
+
+def create_test_token(role_id=None):
+
+    _token_manager = token_manager
+    if role_id is None:
+        _token_manager = token_manager.disable_tenant_aware()
+
+    user = create_test_user(role_id=role_id)
+    token = _token_manager.disable_tenant_aware().create(
+        {
+            "user_id": user["user_id"],
+            "token": secrets.token_hex(5),
+        }
+    )
+
+    return token.to_dict()
