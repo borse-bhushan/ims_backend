@@ -1,3 +1,5 @@
+"""Test cases for tenant configuration API endpoints in a multi-tenant setup."""
+
 import os
 
 from utils import settings
@@ -7,8 +9,10 @@ from test_utils.test_case_base import TestCaseBase
 
 
 class TenantConfigurationTestCase(TestCaseBase):
+    """Test suite for creating and retrieving tenant configurations."""
 
     def setUp(self):
+        """Set up path and tenant instance for test execution."""
         from tenant.tests.test_tenant import TenantTestCase
 
         self.path = "/api/tenant/{tenant_id}/configuration"
@@ -18,13 +22,15 @@ class TenantConfigurationTestCase(TestCaseBase):
 
     @staticmethod
     def valid_tenant_conf_data():
+        """Return valid config with JWT token and SHARED DB strategy."""
         return {"authentication_type": "JWT_TOKEN", "database_strategy": "SHARED"}
 
     def test_create_tenant_configuration(self):
+        """Test creation of a tenant configuration with valid data."""
         data = self.valid_tenant_conf_data()
         tenant = self.tenant.test_tenant_create()
         response = self.client.post(
-            self.path.format(tenant_id=tenant["data"]["tenant_id"]), data=data
+            self.path.format(tenant_id=tenant["tenant_id"]), data=data
         )
         response_data = response.json()
 
@@ -37,17 +43,19 @@ class TenantConfigurationTestCase(TestCaseBase):
             response_data["data"]["authentication_type"], data["authentication_type"]
         )
 
-        return response_data
+        return {**response_data, "tenant": tenant}
 
     @staticmethod
     def valid_tenant_conf_data_with_auth_token():
+        """Return valid config using TOKEN auth type and SHARED DB."""
         return {"authentication_type": "TOKEN", "database_strategy": "SHARED"}
 
     def test_create_tenant_configuration_with_auth_token(self):
+        """Test tenant config creation with TOKEN auth strategy."""
         data = self.valid_tenant_conf_data_with_auth_token()
         tenant = self.tenant.test_tenant_create()
         response = self.client.post(
-            self.path.format(tenant_id=tenant["data"]["tenant_id"]), data=data
+            self.path.format(tenant_id=tenant["tenant_id"]), data=data
         )
         response_data = response.json()
 
@@ -60,18 +68,20 @@ class TenantConfigurationTestCase(TestCaseBase):
             response_data["data"]["authentication_type"], data["authentication_type"]
         )
 
-        return response_data
+        return {**response_data, "tenant": tenant}
 
     @staticmethod
     def valid_tenant_conf_data_with_separate_db():
+        """Return valid config with JWT auth and SEPARATE DB strategy."""
         return {"authentication_type": "JWT_TOKEN", "database_strategy": "SEPARATE"}
 
     def test_create_tenant_configuration_with_separate_db(self):
+        """Test tenant config creation using separate DB strategy."""
         data = self.valid_tenant_conf_data_with_separate_db()
         tenant = self.tenant.test_tenant_create()
 
         response = self.client.post(
-            self.path.format(tenant_id=tenant["data"]["tenant_id"]), data=data
+            self.path.format(tenant_id=tenant["tenant_id"]), data=data
         )
         response_data = response.json()
 
@@ -86,9 +96,10 @@ class TenantConfigurationTestCase(TestCaseBase):
 
         self.remove_extra_created_db()
 
-        return response_data
+        return {**response_data, "tenant": tenant}
 
     def remove_extra_created_db(self):
+        """Remove all non-default test databases created dynamically."""
         DATABASES = settings.read("DATABASES")
 
         del_dbs = []
@@ -104,15 +115,34 @@ class TenantConfigurationTestCase(TestCaseBase):
         for del_db in del_dbs:
             del DATABASES[del_db]
 
+    def test_create_tenant_conf_invalid_tenant_id(self):
+        """Test tenant config creation with a non-existent tenant ID."""
+        data = self.valid_tenant_conf_data()
+        non_existing_id = get_uuid()
+        response = self.client.post(
+            self.path.format(tenant_id=non_existing_id), data=data
+        )
+        response_data = response.json()
+        self.bad_request_404(response_data)
+
+        self.assertEqual(len(response_data["errors"]), 1)
+        self.assertEqual(response_data["errors"][0]["field"], "tenant_id")
+        self.assertEqual(response_data["errors"][0]["code"], "NO_DATA_FOUND")
+        self.assertEqual(response_data["errors"][0]["message"], "No Data Found.")
+
+        return True
+
     @staticmethod
     def invalid_data():
+        """Return completely empty payload for testing required fields."""
         return {}
 
     def test_create_tenant_conf_invalid_data(self):
+        """Test config creation with missing required field."""
         data = self.invalid_data()
         tenant = self.tenant.test_tenant_create()
         response = self.client.post(
-            self.path.format(tenant_id=tenant["data"]["tenant_id"]), data=data
+            self.path.format(tenant_id=tenant["tenant_id"]), data=data
         )
         response_data = response.json()
         self.bad_request_404(response_data)
@@ -127,14 +157,16 @@ class TenantConfigurationTestCase(TestCaseBase):
         return True
 
     @staticmethod
-    def tenant_cong_none_or_blank_data():
+    def tenant_conf_none_or_blank_data():
+        """Return config with null and blank values for validation."""
         return {"authentication_type": None, "database_strategy": ""}
 
     def test_create_tenant_conf_none_or_blank_data(self):
-        data = self.tenant_cong_none_or_blank_data()
+        """Test config creation with null and blank field values."""
+        data = self.tenant_conf_none_or_blank_data()
         tenant = self.tenant.test_tenant_create()
         response = self.client.post(
-            self.path.format(tenant_id=tenant["data"]["tenant_id"]), data=data
+            self.path.format(tenant_id=tenant["tenant_id"]), data=data
         )
         response_data = response.json()
         self.bad_request_404(response_data)
@@ -152,5 +184,30 @@ class TenantConfigurationTestCase(TestCaseBase):
         self.assertEqual(
             response_data["errors"][1]["message"], '"" is not a valid choice.'
         )
+
+        return True
+
+    def test_get_tenant_conf(self):
+        """Test fetching config for an existing tenant."""
+        config_data = self.test_create_tenant_configuration()
+
+        response = self.client.get(
+            self.path.format(tenant_id=config_data["tenant"]["tenant_id"])
+        )
+        response_data = response.json()
+
+        self.success_ok_200(response_data)
+
+        self.assertEqual(response_data["data"]["database_strategy"], "SHARED")
+        self.assertEqual(response_data["data"]["authentication_type"], "JWT_TOKEN")
+
+        return True
+
+    def test_get_no_data_found(self):
+        """Test fetching tenant config with invalid tenant ID."""
+        non_existing_id = get_uuid()
+        response = self.client.get(self.path.format(tenant_id=non_existing_id))
+        response_data = response.json()
+        self.data_not_found_404(response_data)
 
         return True
