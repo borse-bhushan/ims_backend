@@ -32,7 +32,7 @@ class TenantTestCase(TestCaseBase):
         self.assertEqual(response_data["data"]["tenant_code"], data["tenant_code"])
         self.assertEqual(response_data["data"]["tenant_name"], data["tenant_name"])
 
-        return response_data
+        return response_data["data"]
 
     def test_tenant_already_exist(self):
         """Test creating a tenant with existing code and name returns duplicate error."""
@@ -148,13 +148,13 @@ class TenantTestCase(TestCaseBase):
 
         return True
 
-    def test_get_tenant_obj(self):
+    def test_get_tenant(self):
         """Test retrieving a single tenant by its UUID."""
         data = self.tenant_success_data()
-        tenant_obj = self.test_tenant_create()
+        tenant = self.test_tenant_create()
 
         response = self.client.get(
-            self.path_id.format(tenant_id=tenant_obj["data"]["tenant_id"])
+            self.path_id.format(tenant_id=tenant["tenant_id"])
         )
         response_data = response.json()
 
@@ -187,7 +187,7 @@ class TenantTestCase(TestCaseBase):
 
         tenant = self.test_tenant_create()
         response = self.client.put(
-            self.path_id.format(tenant_id=tenant["data"]["tenant_id"]), data=data
+            self.path_id.format(tenant_id=tenant["tenant_id"]), data=data
         )
         response_data = response.json()
 
@@ -219,7 +219,7 @@ class TenantTestCase(TestCaseBase):
         data = self.invalid_data()
         tenant = self.test_tenant_create()
         response = self.client.put(
-            self.path_id.format(tenant_id=tenant["data"]["tenant_id"]), data=data
+            self.path_id.format(tenant_id=tenant["tenant_id"]), data=data
         )
         response_data = response.json()
 
@@ -247,7 +247,7 @@ class TenantTestCase(TestCaseBase):
 
         tenant = self.test_tenant_create()
         response = self.client.put(
-            self.path_id.format(tenant_id=tenant["data"]["tenant_id"]), data=data
+            self.path_id.format(tenant_id=tenant["tenant_id"]), data=data
         )
         response_data = response.json()
 
@@ -275,7 +275,7 @@ class TenantTestCase(TestCaseBase):
 
         tenant = self.test_tenant_create()
         response = self.client.patch(
-            self.path_id.format(tenant_id=tenant["data"]["tenant_id"]), data=data
+            self.path_id.format(tenant_id=tenant["tenant_id"]), data=data
         )
         response_data = response.json()
 
@@ -307,7 +307,7 @@ class TenantTestCase(TestCaseBase):
         data = self.invalid_data()
         tenant = self.test_tenant_create()
         response = self.client.patch(
-            self.path_id.format(tenant_id=tenant["data"]["tenant_id"]), data=data
+            self.path_id.format(tenant_id=tenant["tenant_id"]), data=data
         )
         response_data = response.json()
 
@@ -321,7 +321,7 @@ class TenantTestCase(TestCaseBase):
 
         tenant = self.test_tenant_create()
         response = self.client.patch(
-            self.path_id.format(tenant_id=tenant["data"]["tenant_id"]), data=data
+            self.path_id.format(tenant_id=tenant["tenant_id"]), data=data
         )
         response_data = response.json()
 
@@ -345,10 +345,10 @@ class TenantTestCase(TestCaseBase):
 
     def test_delete_tenant(self):
         """Test successful deletion of a tenant."""
-        tenant_obj = self.test_tenant_create()
+        tenant = self.test_tenant_create()
 
         response = self.client.delete(
-            self.path_id.format(tenant_id=tenant_obj["data"]["tenant_id"])
+            self.path_id.format(tenant_id=tenant["tenant_id"])
         )
         self.delete_success_204(response.status_code)
 
