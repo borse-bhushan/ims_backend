@@ -3,9 +3,9 @@ __pycache__/
 *.log
 .vscode
 .pytest_cache
-env.json
+# env.json
 static/
 staticfiles/
 media/
 *.sqlite3
-docker_env.json
+# docker_env.json
