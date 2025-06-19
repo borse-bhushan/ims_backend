@@ -9,3 +9,4 @@ staticfiles/
 media/
 *.sqlite3
 # docker_env.json
+.coverage
