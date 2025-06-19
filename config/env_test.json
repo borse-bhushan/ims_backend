@@ -1,11 +1,10 @@
 {
-    "ENV": "LOCAL",
+    "ENV": "TEST",
     "PROJECT_NAME": "IMS",
     "DEBUG": false,
     "DISABLE_PRINT": false,
     "ALLOWED_HOSTS": [
-        ".localhost",
-        "localhost"
+        ".localhost", "localhost"
     ],
     "DATABASES": {
         "default": {
