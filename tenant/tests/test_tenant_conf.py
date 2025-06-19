@@ -16,6 +16,7 @@ class TenantConfigurationTestCase(TestCaseBase):
         from tenant.tests.test_tenant import TenantTestCase
 
         self.path = "/api/tenant/{tenant_id}/configuration"
+        self.path_details = "/api/tenant/{tenant_code}/details"
         self.tenant = TenantTestCase().setUp()
 
         return super().setUp()
@@ -43,7 +44,7 @@ class TenantConfigurationTestCase(TestCaseBase):
             response_data["data"]["authentication_type"], data["authentication_type"]
         )
 
-        return {**response_data, "tenant": tenant}
+        return {**response_data["data"], "tenant": tenant}
 
     @staticmethod
     def valid_tenant_conf_data_with_auth_token():
@@ -68,7 +69,7 @@ class TenantConfigurationTestCase(TestCaseBase):
             response_data["data"]["authentication_type"], data["authentication_type"]
         )
 
-        return {**response_data, "tenant": tenant}
+        return {**response_data["data"], "tenant": tenant}
 
     @staticmethod
     def valid_tenant_conf_data_with_separate_db():
@@ -96,7 +97,7 @@ class TenantConfigurationTestCase(TestCaseBase):
 
         self.remove_extra_created_db()
 
-        return {**response_data, "tenant": tenant}
+        return {**response_data["data"], "tenant": tenant}
 
     def remove_extra_created_db(self):
         """Remove all non-default test databases created dynamically."""
@@ -209,5 +210,37 @@ class TenantConfigurationTestCase(TestCaseBase):
         response = self.client.get(self.path.format(tenant_id=non_existing_id))
         response_data = response.json()
         self.data_not_found_404(response_data)
+
+        return True
+
+    def test_get_tenant_details(self):
+        """
+        Test case to verify the retrieval of tenant configuration details via GET request.
+        Validates the tenant's host, base path, subdomain and API host settings.
+        """
+
+        tenant_conf = self.test_create_tenant_configuration()
+        response = self.client.get(
+            self.path_details.format(tenant_code=tenant_conf["tenant"]["tenant_code"])
+        )
+        response_data = response.json()
+
+        self.success_ok_200(response_data)
+
+        self.assertEqual(response_data["data"]["host"], "testserver")
+        self.assertEqual(response_data["data"]["base_path"], "api")
+        self.assertEqual(response_data["data"]["sub_domain"], "test")
+        self.assertEqual(response_data["data"]["api_host"], "http://test.testserver")
+
+        return {**response_data["data"], "tenant_conf": tenant_conf}
+
+    def test_not_tenant_details_found(self):
+        """Test to verify 404 response when tenant details are not found for invalid tenant code.
+        Checks if API returns proper 404 response when querying tenant details with non-existent tenant code.
+        """
+
+        response = self.client.get(self.path_details.format(tenant_code="invalid"))
+
+        self.data_not_found_404(response.json())
 
         return True
