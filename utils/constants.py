@@ -4,9 +4,9 @@ This file contains the constants used for the utility.
 
 from django.db.models import TextChoices
 
+TEST = "TEST"
 PROD = "PROD"
 LOCAL = "LOCAL"
-
 
 CMD = "ver"
 VERSION_TYPE = "part"

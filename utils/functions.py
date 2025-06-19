@@ -31,6 +31,13 @@ def is_local():
     return is_env(constants.LOCAL)
 
 
+def is_test():
+    """
+    return true of the current env is TEST.
+    """
+    return is_env(constants.TEST)
+
+
 def is_prod():
     """
     return true of the current env is PROD.
@@ -38,7 +45,6 @@ def is_prod():
     return is_env(constants.PROD)
 
 
-# current env
 def c_env():
     """
     Return the env which app is running.

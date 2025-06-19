@@ -7,12 +7,10 @@ A class to handle the setup of a new tenant in the system.
 
 from django.core.management import call_command
 
-from utils import settings
-from auth_user.constants import RoleEnum
-from auth_user.db_access import user_manager
+from utils import settings, functions as comm_function
 
-from ..db_access import tenant_manager
-from ..constants import DatabaseStrategyEnum
+from tenant.db_access import tenant_manager
+from tenant.constants import DatabaseStrategyEnum
 
 
 class NewTenantSetup:
@@ -27,8 +25,6 @@ class NewTenantSetup:
     Attributes:
         tenant_config_obj: Stored tenant configuration object.
         DATABASES: Dictionary of database configurations loaded from settings.
-
-
 
     """
 
@@ -56,31 +52,11 @@ class NewTenantSetup:
         )
 
         set_database_to_global_settings(tenant_obj)
+        kw = {}
+        if comm_function.is_test():
+            kw["verbosity"] = 0
+        call_command("migrate", database=tenant_obj.tenant_code, **kw)
 
-        call_command("migrate", database=tenant_obj.tenant_code)
-
-        # self.create_super_admin_in_new_tenant(tenant_obj)
-
-        return True
-
-    def create_super_admin_in_new_tenant(self, tenant_obj):
-        user = self.request.user
-        user_manager.upsert(
-            data={
-                "email": user.email,
-                "user_id": user.user_id,
-                "password": user.password,
-                "last_name": user.last_name,
-                "first_name": user.first_name,
-                "date_joined": user.date_joined,
-                "role_id": RoleEnum.COMPANY_ADMIN,
-                "tenant_id": tenant_obj.tenant_id,
-                "phone_number": user.phone_number,
-                "profile_photo": user.profile_photo,
-            },
-            query={"email": user.email},
-            using=tenant_obj.tenant_code,
-        )
         return True
 
 
