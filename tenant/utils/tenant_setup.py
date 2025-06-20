@@ -162,7 +162,12 @@ def setup_sqlite(db_connection_code):
     DATABASES = settings.read("DATABASES")
 
     new_db = copy.deepcopy(DATABASES["default"])
-    new_db["NAME"] = f"{db_connection_code}.sqlite3"
+
+    location: str = new_db["LOCATION"]
+
+    new_db["NAME"] = (
+        location.removesuffix("default.sqlite3") + f"{db_connection_code}.sqlite3"
+    )
 
     DATABASES[db_connection_code] = new_db
 
