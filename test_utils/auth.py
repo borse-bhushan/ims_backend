@@ -10,14 +10,15 @@ def create_super_admin_test_user():
     """
 
     _user_manager = user_manager.disable_tenant_aware()
-    user = _user_manager.create(
+    user = _user_manager.upsert(
         data={
             "last_name": "Borse",
             "first_name": "Bhushan",
             "phone_number": "9878786565",
             "role_id": RoleEnum.SUPER_ADMIN,
-            "email": f"test{secrets.token_hex(4)}@gmail.com",
-        }
+            "email": "test@gmail.com",
+        },
+        query={"email": "test@gmail.com"},
     )
 
     user.set_password("1234")
@@ -31,11 +32,14 @@ def create_super_admin_test_token():
     _token_manager = token_manager.disable_tenant_aware()
 
     user = create_super_admin_test_user()
-    token = _token_manager.disable_tenant_aware().create(
+    token = _token_manager.disable_tenant_aware().upsert(
         {
             "user_id": user["user_id"],
             "token": secrets.token_hex(5),
-        }
+        },
+        query={
+            "user_id": user["user_id"],
+        },
     )
 
     return token.to_dict()

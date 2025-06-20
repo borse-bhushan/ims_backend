@@ -43,10 +43,6 @@ class UserCompanyAdminListQuerySerializer(
         """
         Validates the tenant_id field.
         """
-        if not value:
-            raise serializers.ValidationError(
-                self.error_messages["required"], code=codes.REQUIRED
-            )
 
         if not tenant_manager.exists(query={"tenant_id": value}):
             raise serializers.ValidationError(
