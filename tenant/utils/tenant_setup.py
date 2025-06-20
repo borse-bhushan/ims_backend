@@ -52,9 +52,9 @@ class NewTenantSetup:
         if self.tenant_config_obj.database_strategy == DatabaseStrategyEnum.SHARED:
             return True
 
-        database_config = self.tenant_config_obj.database_config
+        database_config = self.tenant_config_obj.database_config or {}
 
-        database_name = database_config["database_name"]
+        database_name = database_config.get("database_name")
 
         if not database_name:
 
@@ -163,11 +163,7 @@ def setup_sqlite(db_connection_code):
 
     new_db = copy.deepcopy(DATABASES["default"])
 
-    location: str = new_db["LOCATION"]
-
-    new_db["NAME"] = (
-        location.removesuffix("default.sqlite3") + f"{db_connection_code}.sqlite3"
-    )
+    new_db["NAME"] = f"{db_connection_code}.sqlite3"
 
     DATABASES[db_connection_code] = new_db
 

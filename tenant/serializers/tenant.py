@@ -116,15 +116,13 @@ class TenantConfigurationSerializer(serializers.Serializer):
                     code=codes.INVALID_CHOICE,
                 )
 
-        database_server = self.initial_data.get("database_server")
-
-        if database_server != DatabaseServerEnum.SQLITE:
-            if not attrs.get("database_config"):
-                raise serializers.ValidationError(
-                    {"database_config": self.error_messages["required"]},
-                    code=codes.REQUIRED,
-                )
-
+        else:
+            if database_server != DatabaseServerEnum.SQLITE:
+                if not attrs.get("database_config"):
+                    raise serializers.ValidationError(
+                        {"database_config": self.error_messages["required"]},
+                        code=codes.REQUIRED,
+                    )
         return attrs
 
     def validate_tenant_id(self, value):

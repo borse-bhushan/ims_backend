@@ -12,14 +12,17 @@ class APITestClient:
         if auth:
             self.set_auth_header(role_id)
 
-    def set_auth_header(self, role_id):
+    def set_auth_header(self, role_id=None, token=None):
 
-        token = create_test_token(role_id)
+        if not token:
+            token = create_test_token(role_id)
 
         self.set_header("HTTP_AUTHORIZATION", f"Bearer {token['token']}")
+        return self
 
     def set_header(self, key, value):
         self.headers[key] = value
+        return self
 
     def get(self, path, data=None):
         return self.client.get(path, **self.headers, format="json", data=data)

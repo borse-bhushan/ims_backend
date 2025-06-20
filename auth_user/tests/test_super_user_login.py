@@ -1,17 +1,18 @@
-from rest_framework import test, status
+from rest_framework import status
 
 from test_utils import auth
 from test_utils.test_client import APITestClient
+from test_utils.test_case_base import TestCaseBase
 
 
-class SuperAdminAuthTestCase(test.APITestCase):
+class SuperAdminAuthTestCase(TestCaseBase):
 
     @staticmethod
     def success_data():
         return {"username": auth.create_test_user()["email"], "password": "1234"}
 
     def setUp(self):
-        self.client: APITestClient = APITestClient(auth=False)
+        return super().setUp(auth=False)
 
     def test_login_super_admin(self):
         """
@@ -22,19 +23,12 @@ class SuperAdminAuthTestCase(test.APITestCase):
         response = self.client.post("/api/auth/admin/login", data=self.success_data())
 
         response_data = response.json()
-        self.assertTrue(response_data["is_success"])
-        self.assertEqual(
-            response_data["messages"]["message"], "Logged in successfully."
-        )
 
         self.assertIn("token", response_data["data"])
-
         self.assertIn("created_dtm", response_data["data"])
-        self.assertIsNone(response_data["errors"])
+        self.created_successfully_201(response_data, message="Logged in successfully.")
 
-        self.assertEqual(response_data["status_code"], status.HTTP_201_CREATED)
-
-        return True
+        return response_data["data"]
 
     @staticmethod
     def wrong_cred_data():
@@ -52,14 +46,7 @@ class SuperAdminAuthTestCase(test.APITestCase):
         )
 
         response_data = response.json()
-
-        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-
-        self.assertIsNone(response_data["data"])
-        self.assertIsNone(response_data["messages"])
-        self.assertFalse(response_data["is_success"])
-        self.assertEqual(response_data["errors"]["code"], "WRONG_CREDENTIALS")
-        self.assertEqual(response_data["errors"]["message"], "Wrong Credentials.")
+        self.wrong_cred_unauthorize_401(response_data)
 
         return True
 
@@ -79,13 +66,7 @@ class SuperAdminAuthTestCase(test.APITestCase):
 
         response_data = response.json()
 
-        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-
-        self.assertIsNone(response_data["data"])
-        self.assertIsNone(response_data["messages"])
-        self.assertFalse(response_data["is_success"])
-        self.assertEqual(response_data["errors"]["code"], "WRONG_CREDENTIALS")
-        self.assertEqual(response_data["errors"]["message"], "Wrong Credentials.")
+        self.wrong_cred_unauthorize_401(response_data)
 
         return True
 
@@ -102,11 +83,7 @@ class SuperAdminAuthTestCase(test.APITestCase):
 
         response_data = response.json()
 
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertFalse(response_data["is_success"])
-        self.assertEqual(response_data["status_code"], status.HTTP_400_BAD_REQUEST)
-        self.assertIsNone(response_data["data"])
-        self.assertIsNone(response_data["messages"])
+        self.bad_request_404(response_data)
 
         self.assertEqual(len(response_data["errors"]), 2)
 
@@ -121,5 +98,42 @@ class SuperAdminAuthTestCase(test.APITestCase):
         self.assertEqual(
             response_data["errors"][1]["message"], "This field may not be blank."
         )
+
+        return True
+
+    def test_logout_super_admin(self):
+        """
+        Test that a super admin can successfully log out via the admin logout endpoint.
+        This test logs in as a super admin, sends a DELETE request to the logout endpoint with the appropriate authentication header,
+        and asserts that the response status code indicates a successful logout (HTTP 204 No Content).
+        """
+
+        login = self.test_login_super_admin()
+
+        response = self.client.set_auth_header(token=login).delete(
+            "/api/auth/admin/logout"
+        )
+
+        self.delete_success_204(response.status_code)
+
+        return True
+
+    def test_logout_failed_super_admin(self):
+        """
+        Test that logout fails for a super admin with an invalid token.
+        This test simulates a super admin login, replaces the valid token with a dummy token,
+        and attempts to log out. It verifies that the response indicates unauthorized access (401).
+        """
+
+        login = self.test_login_super_admin()
+        login["token"] = "dummy-token"
+
+        response = self.client.set_auth_header(token=login).delete(
+            "/api/auth/admin/logout"
+        )
+
+        response_data = response.json()
+
+        self.unauthorize_401(response_data)
 
         return True
