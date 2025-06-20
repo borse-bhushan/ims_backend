@@ -4,14 +4,12 @@ from auth_user.constants import RoleEnum
 from auth_user.db_access import user_manager, token_manager
 
 
-def create_test_user(role_id=None):
+def create_super_admin_test_user():
     """
     Logs in a user via API and returns an authenticated APIClient.
     """
-    _user_manager = user_manager
-    if role_id is None:
-        _user_manager = user_manager.disable_tenant_aware()
 
+    _user_manager = user_manager.disable_tenant_aware()
     user = _user_manager.create(
         data={
             "last_name": "Borse",
@@ -28,13 +26,11 @@ def create_test_user(role_id=None):
     return user.to_dict()
 
 
-def create_test_token(role_id=None):
+def create_super_admin_test_token():
 
-    _token_manager = token_manager
-    if role_id is None:
-        _token_manager = token_manager.disable_tenant_aware()
+    _token_manager = token_manager.disable_tenant_aware()
 
-    user = create_test_user(role_id=role_id)
+    user = create_super_admin_test_user()
     token = _token_manager.disable_tenant_aware().create(
         {
             "user_id": user["user_id"],

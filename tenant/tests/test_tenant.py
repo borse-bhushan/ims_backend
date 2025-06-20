@@ -2,7 +2,12 @@
 
 from utils.functions import get_uuid
 
-from test_utils.test_case_base import TestCaseBase
+from test_utils.base_super_admin import TestCaseBase
+
+
+def tenant_success_data():
+    """Return valid data for creating a tenant."""
+    return {"tenant_code": "test", "tenant_name": "Test Tenant"}
 
 
 class TenantTestCase(TestCaseBase):
@@ -14,14 +19,8 @@ class TenantTestCase(TestCaseBase):
         self.path_id = "/api/tenant/{tenant_id}"
         return super().setUp()
 
-    @staticmethod
-    def tenant_success_data():
-        """Return valid data for creating a tenant."""
-        return {"tenant_code": "test", "tenant_name": "Test Tenant"}
-
-    def test_tenant_create(self):
+    def test_tenant_create(self, data=tenant_success_data()):
         """Test successful tenant creation."""
-        data = self.tenant_success_data()
         response = self.client.post(self.path, data=data)
 
         response_data = response.json()
@@ -38,7 +37,7 @@ class TenantTestCase(TestCaseBase):
         """Test creating a tenant with existing code and name returns duplicate error."""
         self.test_tenant_create()
 
-        data = self.tenant_success_data()
+        data = tenant_success_data()
         response = self.client.post(self.path, data=data)
         response_data = response.json()
 
@@ -150,12 +149,10 @@ class TenantTestCase(TestCaseBase):
 
     def test_get_tenant(self):
         """Test retrieving a single tenant by its UUID."""
-        data = self.tenant_success_data()
+        data = tenant_success_data()
         tenant = self.test_tenant_create()
 
-        response = self.client.get(
-            self.path_id.format(tenant_id=tenant["tenant_id"])
-        )
+        response = self.client.get(self.path_id.format(tenant_id=tenant["tenant_id"]))
         response_data = response.json()
 
         self.success_ok_200(response_data)
