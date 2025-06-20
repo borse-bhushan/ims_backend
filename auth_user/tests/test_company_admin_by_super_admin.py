@@ -53,6 +53,46 @@ class UserTestCase(TestCaseBase):
         return {**response_data["data"], "tenant_config": tenant_config}
 
     @staticmethod
+    def duplicate_and_invalid_role_data():
+        return {
+            "last_name": "Borse",
+            "first_name": "Bhushan",
+            "email": "test.company.admin@gmail.com",
+            "phone_number": "9878786565",
+            "role_id": RoleEnum.OPERATOR,
+            "password": "1234",
+        }
+
+    def test_create_duplicate_tenant_admin_user(self):
+        """
+        Test that creating a duplicate tenant admin user with an invalid role returns appropriate validation errors.
+        """
+
+        tenant_config = self.test_create_tenant_admin_user()["tenant_config"]
+
+        data = self.duplicate_and_invalid_role_data()
+
+        data["tenant_id"] = tenant_config["tenant"]["tenant_id"]
+
+        response = self.client.post(self.path, data=data)
+
+        response_data = response.json()
+
+        self.bad_request_404(response_data)
+        self.assertEqual(len(response_data["errors"]), 2)
+        self.assertEqual(response_data["errors"][0]["field"], "email")
+        self.assertEqual(response_data["errors"][0]["code"], "DUPLICATE_ENTRY")
+        self.assertEqual(response_data["errors"][0]["message"], "Already Exist.")
+
+        self.assertEqual(response_data["errors"][1]["field"], "role_id")
+        self.assertEqual(response_data["errors"][1]["code"], "INVALID_CHOICE")
+        self.assertEqual(
+            response_data["errors"][1]["message"], "Only COMPANY_ADMIN allowed."
+        )
+
+        return True
+
+    @staticmethod
     def invalid_data():
         return {
             "last_name": "",
