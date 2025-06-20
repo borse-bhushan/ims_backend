@@ -21,6 +21,7 @@ TENANT_CONFIGURATION_NOT_FOUND: str = "Tenant configuration not found."
 AUTHENTICATION_NOT_CONFIGURED: str = "Authentication is not configured."
 PERMISSION_NOT_REGISTER: str = "Permission not register please contact your admin."
 STOCK_QUANTITY_NOT_AVAILABLE: str = "The requested stock quantity is not available."
+CANNOT_CHANGE_DB_STRATEGY: str = "Cannot change database strategy after choosing shared DB."
 PRINT_FUNCTION_IS_DISABLE: str = (
     "'print' function is disabled please remove the use of it instead use the [log_msg]. "
     "Change the DISABLE_PRINT:True in the config file to False to enable the print function. "

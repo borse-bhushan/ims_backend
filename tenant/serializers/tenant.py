@@ -9,7 +9,11 @@ from utils.exceptions import codes
 from utils.validators.unique import validate_unique
 
 from tenant.db_access import tenant_manager
-from tenant.constants import AuthenticationTypeEnum, DatabaseStrategyEnum
+from tenant.constants import (
+    AuthenticationTypeEnum,
+    DatabaseStrategyEnum,
+    DatabaseServerEnum,
+)
 
 
 class TenantSerializer(serializers.Serializer):
@@ -62,6 +66,16 @@ class TenantSerializer(serializers.Serializer):
         return value
 
 
+class DatabaseConfigSerializer(serializers.Serializer):
+    password = serializers.CharField(required=True)
+    username = serializers.CharField(required=True)
+
+    host = serializers.CharField(required=True)
+    port = serializers.IntegerField(required=True)
+    options = serializers.JSONField(required=False, allow_null=True, default=None)
+    database_name = serializers.CharField(required=False, allow_null=True, default=None)
+
+
 class TenantConfigurationSerializer(serializers.Serializer):
     """Serializer for Tenant Configuration"""
 
@@ -74,10 +88,49 @@ class TenantConfigurationSerializer(serializers.Serializer):
         choices=DatabaseStrategyEnum.choices,
     )
 
+    database_server = serializers.ChoiceField(
+        default=DatabaseServerEnum.SQLITE,
+        choices=DatabaseServerEnum.choices,
+    )
+
+    database_config = DatabaseConfigSerializer(
+        required=False, default=None, allow_null=True
+    )
+
     tenant_id = serializers.UUIDField()
 
-    def validate_tenant_id(self, value):
+    def validate(self, attrs):
+        """
+        Validates the database strategy and server combination for tenant configuration.
+        Ensures that if the database strategy is set to SHARED, the database server must be SQLITE.
+        Raises a ValidationError if the combination is invalid.
+        """
 
+        database_server = attrs["database_server"]
+        database_strategy = attrs["database_strategy"]
+
+        if database_strategy == DatabaseStrategyEnum.SHARED:
+            if database_server != DatabaseServerEnum.SQLITE:
+                raise serializers.ValidationError(
+                    {"database_server": error.CANNOT_CHANGE_DB_STRATEGY},
+                    code=codes.INVALID_CHOICE,
+                )
+
+        database_server = self.initial_data.get("database_server")
+
+        if database_server != DatabaseServerEnum.SQLITE:
+            if not attrs.get("database_config"):
+                raise serializers.ValidationError(
+                    {"database_config": self.error_messages["required"]},
+                    code=codes.REQUIRED,
+                )
+
+        return attrs
+
+    def validate_tenant_id(self, value):
+        """
+        Validate that the provided tenant_id exists in the tenant manager.
+        """
         if not tenant_manager.exists({"tenant_id": value}):
             raise serializers.ValidationError(
                 error.NO_DATA_FOUND,

@@ -28,3 +28,6 @@ gunicorn==23.0.0
 
 # for CORS
 django-cors-headers==4.7.0
+
+# for the psycopg2
+psycopg2-binary==2.9.10

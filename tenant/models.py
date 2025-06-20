@@ -7,7 +7,11 @@ from django.db import models
 from utils.functions import get_uuid
 from base.db_models.model import BaseModel
 
-from tenant.constants import AuthenticationTypeEnum, DatabaseStrategyEnum
+from tenant.constants import (
+    AuthenticationTypeEnum,
+    DatabaseStrategyEnum,
+    DatabaseServerEnum,
+)
 
 
 class Tenant(BaseModel, models.Model):
@@ -60,6 +64,19 @@ class TenantConfiguration(BaseModel, models.Model):
         help_text="Defines whether the tenant uses a shared or separate database.",
     )
 
+    database_server = models.CharField(
+        max_length=16,
+        choices=DatabaseServerEnum.choices,
+        default=DatabaseServerEnum.SQLITE,
+        help_text="Defines which backend database to be use.",
+    )
+
+    database_config = models.JSONField(
+        null=True,
+        default=None,
+        help_text="Database config like host, port, db-name, password, username etc.",
+    )
+
     tenant = models.ForeignKey("Tenant", on_delete=models.CASCADE)
 
     class Meta:
@@ -74,6 +91,8 @@ class TenantConfiguration(BaseModel, models.Model):
         Convert the model instance to a dictionary.
         """
         return {
+            "database_config": self.database_config,
+            "database_server": self.database_server,
             "database_strategy": self.database_strategy,
             "authentication_type": self.authentication_type,
         }
