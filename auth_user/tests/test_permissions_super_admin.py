@@ -6,7 +6,7 @@ from utils.functions import get_uuid
 from test_utils.base_super_admin import TestCaseBase
 
 
-class PermissionLoadTestCase(TestCaseBase):
+class PermissionTestCase(TestCaseBase):
     """
     Test case for loading permissions as a super admin in the authentication user module.
     """
