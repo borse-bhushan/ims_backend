@@ -16,3 +16,10 @@ class DatabaseStrategyEnum(TextChoices):
 
     SHARED = "SHARED", "Shared DB"
     SEPARATE = "SEPARATE", "Separate DB"
+
+
+class DatabaseServerEnum(TextChoices):
+
+    SQLITE = "SQLITE", "Sqlite3"
+    POSTGRES = "POSTGRES", "Postgres"
+    # MYSQL = "MYSQL", "MySQL"

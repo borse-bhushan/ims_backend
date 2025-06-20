@@ -65,6 +65,7 @@ def get_tenant_db_name(tenant):
 
     is_shared = tenant_config_obj.database_strategy == DatabaseStrategyEnum.SHARED
     if not is_shared:
-        return set_database_to_global_settings(_tenant)
+
+        return set_database_to_global_settings(tenant_config_obj)
 
     return DEFAULT
