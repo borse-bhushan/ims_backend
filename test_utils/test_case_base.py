@@ -5,9 +5,9 @@ from test_utils.test_client import APITestClient
 
 class TestCaseBase(test.APITestCase):
 
-    def setUp(self):
+    def setUp(self, auth=True):
 
-        self.client: APITestClient = APITestClient()
+        self.client: APITestClient = APITestClient(auth=auth)
 
         return self
 
@@ -21,10 +21,10 @@ class TestCaseBase(test.APITestCase):
 
         return True
 
-    def created_successfully_201(self, response_data):
+    def created_successfully_201(self, response_data, message="Created Successfully."):
         self.assertTrue(response_data["is_success"])
         self.assertEqual(response_data["status_code"], status.HTTP_201_CREATED)
-        self.assertEqual(response_data["messages"]["message"], "Created Successfully.")
+        self.assertEqual(response_data["messages"]["message"], message)
         self.assertIsNone(response_data["errors"])
 
         return True
@@ -65,4 +65,25 @@ class TestCaseBase(test.APITestCase):
 
     def delete_success_204(self, status_code):
         self.assertEqual(status_code, status.HTTP_204_NO_CONTENT)
+        return True
+
+    def wrong_cred_unauthorize_401(self, response_data):
+        self.assertIsNone(response_data["data"])
+        self.assertIsNone(response_data["messages"])
+        self.assertFalse(response_data["is_success"])
+        self.assertEqual(response_data["errors"]["code"], "WRONG_CREDENTIALS")
+        self.assertEqual(response_data["errors"]["message"], "Wrong Credentials.")
+        self.assertEqual(response_data["status_code"], status.HTTP_401_UNAUTHORIZED)
+
+        return True
+
+    def unauthorize_401(self, response_data):
+        self.assertIsNone(response_data["data"])
+        self.assertFalse(response_data["is_success"])
+        self.assertIsNone(response_data["messages"])
+        self.assertEqual(response_data["status_code"], status.HTTP_401_UNAUTHORIZED)
+
+        self.assertEqual(response_data["errors"]["code"], "UNAUTHORIZED")
+        self.assertEqual(response_data["errors"]["message"], "Unauthorized Access.")
+
         return True
