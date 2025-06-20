@@ -16,9 +16,9 @@ def create_super_admin_test_user():
             "first_name": "Bhushan",
             "phone_number": "9878786565",
             "role_id": RoleEnum.SUPER_ADMIN,
-            "email": "test@gmail.com",
+            "email": "test.super.admin@gmail.com",
         },
-        query={"email": "test@gmail.com"},
+        query={"email": "test.super.admin@gmail.com"},
     )
 
     user.set_password("1234")

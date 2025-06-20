@@ -26,8 +26,8 @@ from utils.swagger.response import (
     SuccessResponseSerializer,
 )
 
-from auth_user.constants import MethodEnum
 from auth_user.db_access import user_manager
+from auth_user.constants import MethodEnum, RoleEnum
 from auth_user.serializers.user_query import UserCompanyAdminListQuerySerializer
 from auth_user.serializers.user import UserSerializer, UserCompanyAdminSerializer
 from auth_user.swagger.user import (
@@ -159,6 +159,10 @@ class UserCompanyAdminsViewSet(
             **CreateView.get_method_view_mapping(),
             **ListView.get_method_view_mapping(),
         }
+
+    def get_query_obj(self, *_, **__):
+
+        return {"role_id": RoleEnum.COMPANY_ADMIN}
 
     def save(self, data, **kwargs):
         """

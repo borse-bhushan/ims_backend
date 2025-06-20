@@ -57,7 +57,10 @@ class SuperAdminAuthTestCase(TestCaseBase):
 
     @staticmethod
     def wrong_password_data():
-        return {"username": auth.create_super_admin_test_user()["email"], "password": "12345"}
+        return {
+            "username": auth.create_super_admin_test_user()["email"],
+            "password": "12345",
+        }
 
     def test_wrong_password_only_super_admin(self):
         """Test super admin login with wrong password.
@@ -135,6 +138,48 @@ class SuperAdminAuthTestCase(TestCaseBase):
 
         response = self.client.set_auth_header(token=login).delete(
             "/api/auth/admin/logout"
+        )
+
+        response_data = response.json()
+
+        self.unauthorize_401(response_data)
+
+        return True
+
+    def test_get_super_admin_profile(self):
+        """
+        Test retrieval of the super admin user's profile and validate response data.
+        """
+
+        login = self.test_login_super_admin()
+
+        response = self.client.set_auth_header(token=login).get(
+            "/api/user/super-admin/profile"
+        )
+
+        response_data = response.json()
+
+        self.success_ok_200(response_data)
+
+        self.assertEqual(response_data["data"]["email"], "test.super.admin@gmail.com")
+        self.assertEqual(response_data["data"]["role_id"], "SUPER_ADMIN")
+        self.assertEqual(response_data["data"]["phone_number"], "9878786565")
+        self.assertEqual(response_data["data"]["first_name"], "Bhushan")
+        self.assertEqual(response_data["data"]["last_name"], "Borse")
+        self.assertEqual(response_data["data"]["full_name"], "Bhushan Borse")
+        self.assertIsNone(response_data["data"]["profile_photo"])
+        self.assertIn("user_id", response_data["data"])
+
+        return True
+
+    def test_get_super_admin_profile_wrong_token(self):
+        """Test that accessing the super admin profile with an invalid token returns a 401 Unauthorized response."""
+
+        login = self.test_login_super_admin()
+        login["token"] = "dummy-token"
+
+        response = self.client.set_auth_header(token=login).get(
+            "/api/user/super-admin/profile"
         )
 
         response_data = response.json()
