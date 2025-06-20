@@ -1,15 +1,7 @@
 from rest_framework import test, status
 
-from test_utils.test_client import APITestClient
 
-
-class TestCaseBase(test.APITestCase):
-
-    def setUp(self, auth=True):
-
-        self.client: APITestClient = APITestClient(auth=auth)
-
-        return self
+class CommonTestCaseAssertsBase(test.APITestCase):
 
     def data_not_found_404(self, response_data):
         self.assertFalse(response_data["is_success"])

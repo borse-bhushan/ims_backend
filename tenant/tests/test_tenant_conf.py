@@ -4,8 +4,22 @@ import os
 
 from utils import settings
 from utils.functions import get_uuid
+from test_utils.base_super_admin import TestCaseBase
 
-from test_utils.test_case_base import TestCaseBase
+
+def valid_tenant_conf_data():
+    """Return valid config with JWT token and SHARED DB strategy."""
+    return {"authentication_type": "JWT_TOKEN", "database_strategy": "SHARED"}
+
+
+def valid_tenant_conf_data_with_auth_token():
+    """Return valid config using TOKEN auth type and SHARED DB."""
+    return {"authentication_type": "TOKEN", "database_strategy": "SHARED"}
+
+
+def valid_tenant_conf_data_with_separate_db():
+    """Return valid config with JWT auth and SEPARATE DB strategy."""
+    return {"authentication_type": "JWT_TOKEN", "database_strategy": "SEPARATE"}
 
 
 class TenantConfigurationTestCase(TestCaseBase):
@@ -21,18 +35,17 @@ class TenantConfigurationTestCase(TestCaseBase):
 
         return super().setUp()
 
-    @staticmethod
-    def valid_tenant_conf_data():
-        """Return valid config with JWT token and SHARED DB strategy."""
-        return {"authentication_type": "JWT_TOKEN", "database_strategy": "SHARED"}
-
-    def test_create_tenant_configuration(self):
+    def test_create_tenant_configuration(
+        self, data=valid_tenant_conf_data(), tenant=None
+    ):
         """Test creation of a tenant configuration with valid data."""
-        data = self.valid_tenant_conf_data()
-        tenant = self.tenant.test_tenant_create()
+        if tenant is None:
+            tenant = self.tenant.test_tenant_create()
+
         response = self.client.post(
             self.path.format(tenant_id=tenant["tenant_id"]), data=data
         )
+
         response_data = response.json()
 
         self.created_successfully_201(response_data)
@@ -46,15 +59,13 @@ class TenantConfigurationTestCase(TestCaseBase):
 
         return {**response_data["data"], "tenant": tenant}
 
-    @staticmethod
-    def valid_tenant_conf_data_with_auth_token():
-        """Return valid config using TOKEN auth type and SHARED DB."""
-        return {"authentication_type": "TOKEN", "database_strategy": "SHARED"}
-
-    def test_create_tenant_configuration_with_auth_token(self):
+    def test_create_tenant_configuration_with_auth_token(
+        self, data=valid_tenant_conf_data_with_auth_token(), tenant=None
+    ):
         """Test tenant config creation with TOKEN auth strategy."""
-        data = self.valid_tenant_conf_data_with_auth_token()
-        tenant = self.tenant.test_tenant_create()
+        if tenant is None:
+            tenant = self.tenant.test_tenant_create()
+
         response = self.client.post(
             self.path.format(tenant_id=tenant["tenant_id"]), data=data
         )
@@ -71,15 +82,13 @@ class TenantConfigurationTestCase(TestCaseBase):
 
         return {**response_data["data"], "tenant": tenant}
 
-    @staticmethod
-    def valid_tenant_conf_data_with_separate_db():
-        """Return valid config with JWT auth and SEPARATE DB strategy."""
-        return {"authentication_type": "JWT_TOKEN", "database_strategy": "SEPARATE"}
-
-    def test_create_tenant_configuration_with_separate_db(self):
+    def test_create_tenant_configuration_with_separate_db(
+        self, data=valid_tenant_conf_data_with_separate_db(), tenant=None
+    ):
         """Test tenant config creation using separate DB strategy."""
-        data = self.valid_tenant_conf_data_with_separate_db()
-        tenant = self.tenant.test_tenant_create()
+
+        if tenant is None:
+            tenant = self.tenant.test_tenant_create()
 
         response = self.client.post(
             self.path.format(tenant_id=tenant["tenant_id"]), data=data
@@ -118,7 +127,7 @@ class TenantConfigurationTestCase(TestCaseBase):
 
     def test_create_tenant_conf_invalid_tenant_id(self):
         """Test tenant config creation with a non-existent tenant ID."""
-        data = self.valid_tenant_conf_data()
+        data = valid_tenant_conf_data()
         non_existing_id = get_uuid()
         response = self.client.post(
             self.path.format(tenant_id=non_existing_id), data=data

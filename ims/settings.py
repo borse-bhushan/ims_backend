@@ -28,7 +28,7 @@ def load_env():
     """
     Load the env.json file
     """
-    with open(BASE_DIR / "config/env.json", "r", encoding="UTF-8") as config_file:
+    with open(BASE_DIR / "config/env_test.json", "r", encoding="UTF-8") as config_file:
         return json.load(config_file)
 
 

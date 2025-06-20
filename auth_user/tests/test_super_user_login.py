@@ -1,18 +1,21 @@
-from rest_framework import status
-
 from test_utils import auth
+
 from test_utils.test_client import APITestClient
-from test_utils.test_case_base import TestCaseBase
+from test_utils.base_super_admin import TestCaseBase
+
+
+def success_data():
+    return {
+        "password": "1234",
+        "username": auth.create_super_admin_test_user()["email"],
+    }
 
 
 class SuperAdminAuthTestCase(TestCaseBase):
 
-    @staticmethod
-    def success_data():
-        return {"username": auth.create_test_user()["email"], "password": "1234"}
-
     def setUp(self):
-        return super().setUp(auth=False)
+        self.client: APITestClient = APITestClient()
+        return self
 
     def test_login_super_admin(self):
         """
@@ -20,7 +23,9 @@ class SuperAdminAuthTestCase(TestCaseBase):
         This test verifies that a super admin can successfully log in through the API endpoint.
         """
 
-        response = self.client.post("/api/auth/admin/login", data=self.success_data())
+        data = success_data()
+
+        response = self.client.post("/api/auth/admin/login", data=data)
 
         response_data = response.json()
 
@@ -52,7 +57,7 @@ class SuperAdminAuthTestCase(TestCaseBase):
 
     @staticmethod
     def wrong_password_data():
-        return {"username": auth.create_test_user()["email"], "password": "12345"}
+        return {"username": auth.create_super_admin_test_user()["email"], "password": "12345"}
 
     def test_wrong_password_only_super_admin(self):
         """Test super admin login with wrong password.
