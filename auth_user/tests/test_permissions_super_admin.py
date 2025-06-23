@@ -19,10 +19,11 @@ class PermissionTestCase(TestCaseBase):
 
         return super().setUp()
 
-    def test_load_permissions(self):
+    def test_load_permissions(self, tenant_config=None):
         """Test that permissions are loaded successfully for a given tenant configuration."""
 
-        tenant_config = self.tenant_conf.test_create_tenant_configuration()
+        if not tenant_config:
+            tenant_config = self.tenant_conf.test_create_tenant_configuration()
 
         response = self.client.post(
             self.path,

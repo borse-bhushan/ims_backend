@@ -5,6 +5,7 @@ Interface for caching operations with tenant awareness support.
 from django.core.cache import cache as d_cache
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
 
+from utils.functions import is_test
 from tenant.utils.helpers import get_tenant_details_from_request_thread
 
 

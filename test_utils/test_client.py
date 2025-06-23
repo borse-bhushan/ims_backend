@@ -8,12 +8,14 @@ class APITestClient:
         self.headers = headers or {}
 
     def set_auth_header(self, token=None):
-        self.set_header("HTTP_AUTHORIZATION", f"Bearer {token['token']}")
-        return self
+        return self.set_header("HTTP_AUTHORIZATION", f"Bearer {token['token']}")
 
     def set_header(self, key, value):
         self.headers[key] = value
         return self
+
+    def set_host(self, http_host):
+        return self.set_header("HTTP_HOST", http_host)
 
     def get(self, path, data=None):
         return self.client.get(path, **self.headers, format="json", data=data)

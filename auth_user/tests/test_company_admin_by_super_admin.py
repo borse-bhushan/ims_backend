@@ -1,7 +1,7 @@
 from utils.functions import get_uuid
-from test_utils.base_super_admin import TestCaseBase
-
 from auth_user.constants import RoleEnum
+
+from test_utils.base_super_admin import TestCaseBase
 
 
 class UserTestCase(TestCaseBase):
@@ -25,14 +25,15 @@ class UserTestCase(TestCaseBase):
             "password": "1234",
         }
 
-    def test_create_tenant_admin_user(self):
+    def test_create_tenant_admin_user(self, tenant_config=None):
         """
         Test the creation of a tenant admin user by a super admin and validate the response data.
         """
 
         data = self.success_data()
 
-        tenant_config = self.tenant_conf.test_create_tenant_configuration()
+        if not tenant_config:
+            tenant_config = self.tenant_conf.test_create_tenant_configuration()
 
         data["tenant_id"] = tenant_config["tenant"]["tenant_id"]
 
@@ -103,9 +104,9 @@ class UserTestCase(TestCaseBase):
             "password": "",
         }
 
-    def test_create_company_tenant_with_wrong_data(self):
+    def test_create_tenant_admin_with_wrong_data(self):
         """
-        Test that creating a company tenant with invalid data returns appropriate validation errors.
+        Test that creating a tenant admin with invalid data returns appropriate validation errors.
         """
 
         data = self.invalid_data()
@@ -162,9 +163,9 @@ class UserTestCase(TestCaseBase):
 
         return True
 
-    def test_get_list_company_admins(self):
+    def test_get_list_tenant_admins(self):
         """
-        Test retrieving the list of company admins for a given tenant and validate response data and pagination.
+        Test retrieving the list of tenant admins for a given tenant and validate response data and pagination.
         """
 
         tenant = self.test_create_tenant_admin_user()["tenant_config"]["tenant"]
@@ -193,8 +194,8 @@ class UserTestCase(TestCaseBase):
 
         return True
 
-    def test_get_list_company_admin_wrong_tenant_id(self):
-        """Test that requesting company admin list with an invalid tenant_id returns the correct error response."""
+    def test_get_list_tenant_admin_wrong_tenant_id(self):
+        """Test that requesting tenant admin list with an invalid tenant_id returns the correct error response."""
 
         self.test_create_tenant_admin_user()
 
@@ -211,7 +212,7 @@ class UserTestCase(TestCaseBase):
 
         return True
 
-    def test_get_list_company_admin_none_tenant_id(self):
+    def test_get_list_tenant_admin_none_tenant_id(self):
         """
         Test that a GET request with an empty tenant_id returns a proper validation error.
         """
@@ -232,8 +233,8 @@ class UserTestCase(TestCaseBase):
 
         return True
 
-    def test_get_list_company_admin_no_users(self):
-        """Test that getting the list of company admins returns 404 when no users exist."""
+    def test_get_list_tenant_admin_no_users(self):
+        """Test that getting the list of tenant admins returns 404 when no users exist."""
 
         tenant_id = self.tenant_conf.test_create_tenant_configuration()["tenant"][
             "tenant_id"

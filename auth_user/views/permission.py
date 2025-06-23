@@ -66,7 +66,7 @@ class ListCreatePermissionViewSet(
         return get_tenant_db_name(qp["tenant_id"])
 
     @extend_schema(
-        request={},
+        request=PermissionListQuerySerializer,
         responses={
             201: SuccessResponseSerializer,
             **responses_404,
@@ -88,7 +88,6 @@ class ListCreatePermissionViewSet(
 
     def save(self, data, **kwargs):
         load_permission.load_permissions_for_tenant(
-            request=kwargs["request"],
             tenant_id=data["tenant_id"],
         )
         return None

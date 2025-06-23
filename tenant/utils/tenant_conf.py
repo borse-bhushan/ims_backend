@@ -43,7 +43,7 @@ def get_tenant_db_name(tenant):
         ]
 
         if not _tenant:
-            _tenant = tenant_manager.disable_tenant_aware().get(
+            _tenant = tenant_manager.get(
                 query={
                     "tenant_id": tenant,
                 },
@@ -54,10 +54,9 @@ def get_tenant_db_name(tenant):
     if _tenant.tenant_code in DATABASES:
         return _tenant.tenant_code
 
-    tenant_config_obj = tenant_configuration_manager.disable_tenant_aware().get(
-        {
-            "tenant_id": _tenant.tenant_id,
-        }
+    tenant_config_obj = tenant_configuration_manager.get(
+        query={"tenant_id": _tenant.tenant_id},
+        using=DEFAULT,
     )
 
     if not tenant_config_obj:

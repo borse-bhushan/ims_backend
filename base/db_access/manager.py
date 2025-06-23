@@ -172,9 +172,6 @@ class Manager(Generic[T]):
             - Requires tenant_obj to have valid database configuration
         """
 
-        if not self.__is_tenant_aware or not self.model.migrate_to_tenant:
-            return self.DEFAULT_DB
-
         migrate_to_tenant = getattr(self.model, "migrate_to_tenant")
 
         if migrate_to_tenant:
@@ -241,10 +238,14 @@ class Manager(Generic[T]):
         Returns:
             bool: True if the manager is tenant-aware, False otherwise.
         """
+        migrate_to_tenant = getattr(self.model, "migrate_to_tenant")
+        if not migrate_to_tenant:
+            return False
 
         is_tenant_aware = is_request_tenant_aware()
         if not is_tenant_aware:
             return False
+
         return self.__tenant_aware
 
     def get(self, query, using=None) -> T | None:

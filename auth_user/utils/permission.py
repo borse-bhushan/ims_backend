@@ -32,7 +32,7 @@ class LoadPermission:
         self.__modules_and_there_actions[module] = action_list
         return True
 
-    def load_permissions_for_tenant(self, tenant_id, request):
+    def load_permissions_for_tenant(self, tenant_id):
         """
         Loads all registered modules and their actions into the
         permission manager for a single tenant.
@@ -42,20 +42,17 @@ class LoadPermission:
 
         for module, action_and_name_list in self.__modules_and_there_actions.items():
             for action_and_name in action_and_name_list:
-                self.__upsert_permission(
-                    module, action_and_name, db_name, request, tenant_id
-                )
+                self.__upsert_permission(module, action_and_name, db_name, tenant_id)
 
-    def __upsert_permission(self, module, action_and_name, db_name, request, tenant_id):
+    def __upsert_permission(self, module, action_and_name, db_name, tenant_id):
         """
         Upserts a single permission into the permission manager.
         """
-        permission_manager.upsert(
+        permission_manager.disable_tenant_aware().upsert(
             data={
                 "module": module,
                 **action_and_name,
                 "tenant_id": tenant_id,
-                "created_by": request.user.user_id,
             },
             query={
                 "module": module,

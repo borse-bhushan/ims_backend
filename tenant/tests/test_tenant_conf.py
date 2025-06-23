@@ -222,13 +222,15 @@ class TenantConfigurationTestCase(TestCaseBase):
 
         return True
 
-    def test_get_tenant_details(self):
+    def test_get_tenant_details(self, tenant_conf=None):
         """
         Test case to verify the retrieval of tenant configuration details via GET request.
         Validates the tenant's host, base path, subdomain and API host settings.
         """
 
-        tenant_conf = self.test_create_tenant_configuration()
+        if not tenant_conf:
+            tenant_conf = self.test_create_tenant_configuration()
+
         response = self.client.get(
             self.path_details.format(tenant_code=tenant_conf["tenant"]["tenant_code"])
         )
