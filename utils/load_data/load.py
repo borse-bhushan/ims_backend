@@ -19,10 +19,6 @@ def load_data():
     load_data_obj = LoadDataFromFiles()
     load_data_obj.delete_all_records()
 
-    # load_data_obj.load_tenant_data()
-
-    # tenant_manager_obj = tenant_manager.disable_tenant_aware()
-    # tenant_obj = tenant_manager_obj.get(query={})
 
     set_tenant_details_to_request_thread(None)
 
@@ -60,7 +56,7 @@ class LoadDataFromFiles:
         """
         data = self.read_file("tenant")
         tenant_data = data.get("data")
-        tenant_manager_obj = tenant_manager.disable_tenant_aware()
+        tenant_manager_obj = tenant_manager
         data = tenant_manager_obj.create(data=tenant_data, many=True)
         return data
 
@@ -72,8 +68,7 @@ class LoadDataFromFiles:
         user_manager_obj = user_manager.disable_tenant_aware()
         user_manager_obj.delete(soft_delete=False, force_delete=True)
 
-        tenant_manager_obj = tenant_manager.disable_tenant_aware()
-        tenant_manager_obj.delete(soft_delete=False, force_delete=True)
+        tenant_manager.delete(soft_delete=False, force_delete=True)
 
     def read_file(self, file_path):
         """

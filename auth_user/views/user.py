@@ -209,6 +209,7 @@ class UserCompanyAdminsViewSet(
             responses_401_example,
         ],
         tags=[MODULE],
+        parameters=[UserCompanyAdminListQuerySerializer(partial=True)],
     )
     @register_permission(
         MODULE, MethodEnum.GET, f"Get {MODULE}", create_permission=False

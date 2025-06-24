@@ -1,4 +1,4 @@
-# from utils.functions import get_uuid
+from utils.functions import get_uuid
 from auth_user.constants import RoleEnum
 from test_utils.tenant_user_base import TestCaseBase
 
@@ -221,9 +221,7 @@ class UserTestCase(TestCaseBase):
         Test retrieving a user by ID that does not exist and validate the response.
         """
 
-        response = self.client.get(
-            self.path_id.format(user_id="123e4567-e89b-12d3-a456-426614174000")
-        )
+        response = self.client.get(self.path_id.format(user_id=get_uuid()))
 
         response_data = response.json()
 
@@ -276,7 +274,7 @@ class UserTestCase(TestCaseBase):
 
         data = self.update_data()
         response = self.client.put(
-            self.path_id.format(user_id="123e4567-e89b-12d3-a456-426614174000"),
+            self.path_id.format(user_id=get_uuid()),
             data=data,
         )
 
@@ -379,7 +377,7 @@ class UserTestCase(TestCaseBase):
         }
 
         response = self.client.patch(
-            self.path_id.format(user_id="123e4567-e89b-12d3-a456-426614174000"),
+            self.path_id.format(user_id=get_uuid()),
             data=data,
         )
 
@@ -407,9 +405,7 @@ class UserTestCase(TestCaseBase):
         Test deleting a user that does not exist and validate the response.
         """
 
-        response = self.client.delete(
-            self.path_id.format(user_id="123e4567-e89b-12d3-a456-426614174000")
-        )
+        response = self.client.delete(self.path_id.format(user_id=get_uuid()))
 
         response_data = response.json()
 

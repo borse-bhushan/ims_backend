@@ -17,21 +17,13 @@ class RolePermissionSerializer(serializers.Serializer):
     Serializer for both creating a RolePermission.
     """
 
-    permission_id = serializers.UUIDField(required=False)
+    permission_id = serializers.UUIDField()
     role_id = serializers.ChoiceField(choices=RoleEnum.choices, required=True)
 
     def validate(self, attrs):
         """
         Validate the input data for creating or updating a RolePermission.
         """
-
-        if not permission_manager.exists({"permission_id": attrs["permission_id"]}):
-            raise serializers.ValidationError(
-                {
-                    "permission_id": error.NO_DATA_FOUND,
-                },
-                code=codes.NO_DATA_FOUND,
-            )
 
         if role_permission_mapping_manager.exists(
             {
@@ -47,3 +39,14 @@ class RolePermissionSerializer(serializers.Serializer):
             )
 
         return attrs
+
+    def validate_permission_id(self, value):
+        """
+        Validate the permission_id field.
+        """
+        if not permission_manager.exists({"permission_id": value}):
+            raise serializers.ValidationError(
+                error.NO_DATA_FOUND,
+                code=codes.NO_DATA_FOUND,
+            )
+        return value

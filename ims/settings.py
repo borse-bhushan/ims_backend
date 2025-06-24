@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 import os
+import sys
 import json
 from pathlib import Path
 
@@ -28,7 +29,16 @@ def load_env():
     """
     Load the env.json file
     """
-    with open(BASE_DIR / "config/env_test.json", "r", encoding="UTF-8") as config_file:
+    is_running_test = "test" in sys.argv
+
+    if is_running_test:
+        # If running tests, use the test configuration
+        env_file = "config/env_test.json"
+    else:
+        # Otherwise, use the default configuration
+        env_file = "config/env.json"
+
+    with open(BASE_DIR / env_file, "r", encoding="UTF-8") as config_file:
         return json.load(config_file)
 
 

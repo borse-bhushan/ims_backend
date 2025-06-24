@@ -58,13 +58,13 @@ class NewTenantSetup:
 
         if not database_name:
 
-            tenant_obj = tenant_manager.disable_tenant_aware().get(
+            tenant_obj = tenant_manager.get(
                 query={"tenant_id": self.tenant_config_obj.tenant_id}
             )
 
             database_config["database_name"] = tenant_obj.tenant_code
 
-            self.tenant_config_obj = tenant_configuration_manager.disable_tenant_aware().update(
+            self.tenant_config_obj = tenant_configuration_manager.update(
                 data={"database_config": database_config},
                 query={
                     "tenant_configuration_id": self.tenant_config_obj.tenant_configuration_id

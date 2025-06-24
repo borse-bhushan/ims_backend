@@ -1,8 +1,4 @@
-# 📦 Project Title
-
-📘 Inventory Management System (IMS)
-
-## 📝 Overview
+# 📘 Inventory Management System (IMS)
 
 This Django-based Inventory Management System (IMS) is a scalable, multi-tenant backend application built to manage inventory operations across  multiple tenants. It supports fine-grained access control, optimized API routing, and production-ready deployment with Docker and Nginx.
 

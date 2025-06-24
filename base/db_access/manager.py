@@ -174,20 +174,20 @@ class Manager(Generic[T]):
 
         migrate_to_tenant = getattr(self.model, "migrate_to_tenant")
 
-        if migrate_to_tenant:
-            from tenant.utils.tenant_conf import get_tenant_db_name
+        if not self.__is_tenant_aware or not migrate_to_tenant:
+            return self.DEFAULT_DB
 
-            tenant_obj = get_tenant_details_from_request_thread(
-                raise_err=False,
-                g_t_obj=True,
-            )["tenant_obj"]
+        from tenant.utils.tenant_conf import get_tenant_db_name
 
-            if not tenant_obj:
-                return self.DEFAULT_DB
+        tenant_obj = get_tenant_details_from_request_thread(
+            raise_err=False,
+            g_t_obj=True,
+        )["tenant_obj"]
 
-            return get_tenant_db_name(tenant_obj)
+        if not tenant_obj:
+            return self.DEFAULT_DB
 
-        return self.DEFAULT_DB
+        return get_tenant_db_name(tenant_obj)
 
     def __init__(self, tenant_aware=True):
         if not tenant_aware:

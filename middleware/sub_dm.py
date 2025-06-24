@@ -39,9 +39,7 @@ class AttachSubdomainToRequestMiddleware:
         tenant_obj = tenant_manager.cache.get(sub_domain_data)
 
         if not tenant_obj:
-            tenant_obj = tenant_manager.disable_tenant_aware().get(
-                query={"tenant_code": sub_domain_data}
-            )
+            tenant_obj = tenant_manager.get(query={"tenant_code": sub_domain_data})
             tenant_manager.cache.set(sub_domain_data, tenant_obj)
 
         if not tenant_obj:

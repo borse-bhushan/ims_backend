@@ -23,6 +23,8 @@ class TestCaseBase(CommonTestCaseAssertsBase):
         else:
             self.client: APITestClient = APITestClient()
 
+        return self
+
     def get_client(self, role_id=None):
 
         tenant = self.setup_tenant()
@@ -43,23 +45,25 @@ class TestCaseBase(CommonTestCaseAssertsBase):
     def setup_tenant(self):
         from tenant.db_access import tenant_manager
 
-        return tenant_manager.create(
+        return tenant_manager.upsert(
             data={
                 "tenant_code": "test",
                 "tenant_name": "Test Tenant",
-            }
+            },
+            query={"tenant_code": "test"},
         )
 
     def setup_tenant_conf(self, tenant_id):
         from tenant.db_access import tenant_configuration_manager
 
-        return tenant_configuration_manager.create(
+        return tenant_configuration_manager.upsert(
             data={
                 "tenant_id": tenant_id,
                 "database_server": "SQLITE",
                 "database_strategy": "SHARED",
                 "authentication_type": "JWT_TOKEN",
-            }
+            },
+            query={"tenant_id": tenant_id},
         )
 
     def setup_tenant_permissions(self, tenant_id):
