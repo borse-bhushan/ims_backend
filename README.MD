@@ -168,6 +168,15 @@ Seamless support for both **shared** and **isolated** databases. Each tenant can
 
 ----
 
+### 🔍 Test Coverage Status
+
+📊 **Test Coverage: 98%**
+
+- ✅ All modules are covered with unit tests
+- ✅ DRF serializers, views, middleware, and exceptions tested
+- ✅ Negative and edge cases are validated
+- Check the coverage report by clicking on [📊 Report](coverage/coverage_report.pdf)
+
 ## 🛠️ Versioning Management Command
 
 Manage application versioning using a dedicated Django management command.
@@ -188,29 +197,29 @@ python manage.py ver BF
 python manage.py ver CV
 ```
 
-| Type       | Code | Description                     |
-| ---------- | ---- | ------------------------------- |
+| Type      | Code | Description                     |
+| --------- | ---- | ------------------------------- |
 | 🔼 Major   | `MJ` | Breaking changes or new modules |
-| ➕ Minor    | `MN` | New features or enhancements    |
+| ➕ Minor   | `MN` | New features or enhancements    |
 | 🐞 Bug Fix | `BF` | Bug fixes and patches           |
 | 📋 Current | `CV` | View the current version        |
 
 ## 📚 API Modules Summary
 
-| Module             | Endpoint Prefix              | Description                                             |
-|--------------------|------------------------------|---------------------------------------------------------|
-| 👤 User Mgmt        | `/api/user/`                 | Manage users, profiles, and admin creation              |
-| 🔐 Auth             | `/api/auth/`                 | Login and logout for users and admins                   |
-| 🛡 Permissions      | `/api/permission/`           | List and manage available permissions                   |
-| 🧩 Roles            | `/api/role-permission/`      | Assign/unassign permissions to roles                    |
-| 🏷 Category         | `/api/category/`             | CRUD operations on categories                           |
-| 📦 Products         | `/api/product/`              | Manage products under categories                        |
-| 📥 Stock Mgmt       | `/api/stock/`                | Handle product IN/OUT transactions                      |
-| 📊 Reports          | `/api/report/`               | Generate stock summary and reporting APIs               |
-| 📬 Notifications    | `/api/notification/`         | List tenant notifications                               |
-| 🧾 Audit Logs       | `/api/audit-logs/`           | Track user actions and API requests                     |
-| 🏢 Tenant Mgmt      | `/api/tenant/`               | Manage tenant lifecycle and configurations              |
-| 🧪 Health Check     | `/api/health`                | Check service health status                             |
+| Module          | Endpoint Prefix         | Description                                |
+| --------------- | ----------------------- | ------------------------------------------ |
+| 👤 User Mgmt     | `/api/user/`            | Manage users, profiles, and admin creation |
+| 🔐 Auth          | `/api/auth/`            | Login and logout for users and admins      |
+| 🛡 Permissions   | `/api/permission/`      | List and manage available permissions      |
+| 🧩 Roles         | `/api/role-permission/` | Assign/unassign permissions to roles       |
+| 🏷 Category      | `/api/category/`        | CRUD operations on categories              |
+| 📦 Products      | `/api/product/`         | Manage products under categories           |
+| 📥 Stock Mgmt    | `/api/stock/`           | Handle product IN/OUT transactions         |
+| 📊 Reports       | `/api/report/`          | Generate stock summary and reporting APIs  |
+| 📬 Notifications | `/api/notification/`    | List tenant notifications                  |
+| 🧾 Audit Logs    | `/api/audit-logs/`      | Track user actions and API requests        |
+| 🏢 Tenant Mgmt   | `/api/tenant/`          | Manage tenant lifecycle and configurations |
+| 🧪 Health Check  | `/api/health`           | Check service health status                |
 
 ## 📚 API Documentation
 

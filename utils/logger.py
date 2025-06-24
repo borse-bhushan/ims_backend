@@ -38,7 +38,8 @@ def log_msg(level, *msg, sep="\n", ref_data: dict = None):
             "---------------------------------------" * 3,
         ]
     )
-    if functions.is_local() and functions.is_linux():
+    if functions.is_linux():
+
         if level == logging.ERROR:
             msg = f"[🐞] {msg}"
         if level == logging.DEBUG:
@@ -49,7 +50,5 @@ def log_msg(level, *msg, sep="\n", ref_data: dict = None):
             msg = f"[⚠️] {msg}"
 
     logger = logging.getLogger(settings.read("PROJECT_NAME"))
-    if logger.level:
+    if logger:
         logger.log(level, msg)
-    else:
-        logging.log(level=level, msg=msg)

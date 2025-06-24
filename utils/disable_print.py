@@ -10,12 +10,13 @@ from rest_framework import status
 from utils.messages import error
 from utils.exceptions.exceptions import CommonError
 
+original_print = builtins.print  # Store the original print function
+
 
 def disable_print():
     """
     Disables the print function across the Django project except in virtual environment packages.
     """
-    original_print = builtins.print  # Store the original print function
 
     def restricted_print(*args, **kwargs):
         stack = traceback.extract_stack()

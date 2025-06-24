@@ -15,7 +15,7 @@ import sys
 import json
 from pathlib import Path
 
-
+from utils.functions import is_test
 from utils.version import get_version_str
 from utils.disable_print import disable_print
 
@@ -213,7 +213,9 @@ LOGGING = {
         "file": {
             "level": "DEBUG",
             "class": "logging.handlers.RotatingFileHandler",
-            "filename": os.path.join(LOG_DIR, f"{PROJECT_NAME.lower()}.log"),
+            "filename": os.path.join(
+                LOG_DIR, f"{PROJECT_NAME.lower() + '_test' if is_test() else ''}.log"
+            ),
             "maxBytes": 10 * 1024 * 1024,  # 10 MB
             "backupCount": 5,  # Keeps up to 5 backup log files
             "formatter": "verbose",
@@ -226,7 +228,7 @@ LOGGING = {
     },
     "loggers": {
         PROJECT_NAME: {
-            "handlers": ["file", "console"],
+            "handlers": ["file", "console"] if not is_test() else ["file"],
             "level": "DEBUG",
             "propagate": True,
         },
