@@ -7,7 +7,7 @@ from authentication.permission import register_permission
 from authentication.auth import get_authentication_classes
 
 from utils.response import generate_response
-from utils.exceptions.exceptions import ValidationError
+from utils.exceptions.exceptions import ValidationError, NoDataFoundError
 
 from utils.swagger.response import (
     responses_404,
@@ -87,5 +87,8 @@ class ReportViewSet(viewsets.ViewSet):
             data_dict["total_quantity"] = obj["total_quantity"]
             data_dict["product"] = product_obj_mapping[obj["product_id"]].to_dict()
             data_list.append(data_dict)
+
+        if not data_list:
+            raise NoDataFoundError()
 
         return generate_response(data=data_list)

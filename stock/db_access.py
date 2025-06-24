@@ -36,38 +36,35 @@ class StockManager(manager.Manager[Stock]):
         Signal receiver that sends a notification when a Stock instance is created.
         """
 
-        if not created:
-            return None
+        if created:
+            notification_type = None
+            if instance.movement_type == StockMovementEnum.IN:
+                notification_type = NotificationTypeEnum.STOCK_IN
+            elif instance.movement_type == StockMovementEnum.OUT:
+                notification_type = NotificationTypeEnum.STOCK_OUT
 
-        notification_type = None
+            if notification_type:
+                SendNotification(
+                    title=notifications.STOCK_MOVEMENT_TITLE,
+                    message=notifications.STOCK_MOVEMENT_MESSAGE.format(
+                        quantity=instance.quantity,
+                        reference_number=instance.reference_number,
+                        movement_type=instance.get_movement_type_display(),
+                    ),
+                    created_by=instance.created_by,
+                    notification_type=notification_type,
+                    notification_data={
+                        "stock_id": instance.stock_id,
+                    },
+                ).send(
+                    recipient_list=user_manager.list(
+                        query={
+                            "role_id": RoleEnum.COMPANY_ADMIN,
+                        },
+                    )
+                )
 
-        if instance.movement_type == StockMovementEnum.IN:
-            notification_type = NotificationTypeEnum.STOCK_IN
-        elif instance.movement_type == StockMovementEnum.OUT:
-            notification_type = NotificationTypeEnum.STOCK_OUT
-
-        if notification_type is None:
-            return None
-
-        SendNotification(
-            title=notifications.STOCK_MOVEMENT_TITLE,
-            message=notifications.STOCK_MOVEMENT_MESSAGE.format(
-                quantity=instance.quantity,
-                reference_number=instance.reference_number,
-                movement_type=instance.get_movement_type_display(),
-            ),
-            created_by=instance.created_by,
-            notification_type=notification_type,
-            notification_data={
-                "stock_id": instance.stock_id,
-            },
-        ).send(
-            recipient_list=user_manager.list(
-                query={
-                    "role_id": RoleEnum.COMPANY_ADMIN,
-                },
-            )
-        )
+        return True
 
     def get_stock_summary(self, query):
         """
