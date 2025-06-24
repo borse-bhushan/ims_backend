@@ -19,21 +19,21 @@ class TestCaseBase(CommonTestCaseAssertsBase):
         self.http_host = "test.testserver"
 
         if auth:
-            self.client: APITestClient = self.get_client()
+            self.client: APITestClient = self.get_client(role_id=role_id)
         else:
             self.client: APITestClient = APITestClient()
 
-    def get_client(self):
+    def get_client(self, role_id=None):
 
         tenant = self.setup_tenant()
         set_request_tenant_aware(True)
         set_tenant_details_to_request_thread(tenant_obj=tenant)
 
-        tenant_con = self.setup_tenant_conf(tenant_id=tenant.tenant_id)
+        self.setup_tenant_conf(tenant_id=tenant.tenant_id)
 
         self.setup_tenant_permissions(tenant_id=tenant.tenant_id)
 
-        token = self.get_tenant_user_token(tenant_id=tenant.tenant_id)
+        token = self.get_tenant_user_token(tenant_id=tenant.tenant_id, role_id=role_id)
 
         client = APITestClient()
         client = client.set_auth_header(token).set_host(self.http_host)

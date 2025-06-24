@@ -10,13 +10,12 @@ from tenant.db_access import tenant_manager
 from auth_user.constants import RoleEnum
 
 
-class UserListQuerySerializer(serializers.Serializer):
+class UserListQuerySerializer(QuerySerializer, serializers.Serializer):
     first_name = serializers.CharField()
     last_name = serializers.CharField()
 
 
 class UserCompanyAdminListQuerySerializer(
-    QuerySerializer,
     UserListQuerySerializer,
     serializers.Serializer,
 ):

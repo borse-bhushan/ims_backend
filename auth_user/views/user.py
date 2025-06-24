@@ -28,8 +28,11 @@ from utils.swagger.response import (
 
 from auth_user.db_access import user_manager
 from auth_user.constants import MethodEnum, RoleEnum
-from auth_user.serializers.user_query import UserCompanyAdminListQuerySerializer
 from auth_user.serializers.user import UserSerializer, UserCompanyAdminSerializer
+from auth_user.serializers.user_query import (
+    UserCompanyAdminListQuerySerializer,
+    UserListQuerySerializer,
+)
 from auth_user.swagger.user import (
     UserResponseSerializer,
     UserListResponseSerializer,
@@ -52,6 +55,8 @@ class UserViewSet(BaseView, viewsets.ViewSet):
     manager = user_manager
     lookup_field = "user_id"
     serializer_class = UserSerializer
+    list_serializer_class = UserListQuerySerializer
+    search_fields = ["first_name", "last_name"]
 
     get_authenticators = get_authentication_classes
 
