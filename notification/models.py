@@ -78,4 +78,6 @@ class UserNotification(BaseModel, models.Model):
             "user_id": self.user_id,
             "is_read": self.is_read,
             "notification_id": self.notification_id,
+            "created_dtm": self.created_dtm,
+            "created_by": self.created_by,
         }

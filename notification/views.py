@@ -89,12 +89,12 @@ class NotificationViewSet(UpdateView, ListView, viewsets.ViewSet):
 
         data_list = []
         for obj in objects:
-
+            obj_data = obj.to_dict()
             data_dict = {}
-            data_dict["created_dtm"] = obj.created_dtm
-            data_dict["sent_by"] = user_mapping_obj[obj.created_by].to_dict()
+            data_dict["created_dtm"] = obj_data["created_dtm"]
+            data_dict["sent_by"] = user_mapping_obj[obj_data["created_by"]].to_dict()
             data_dict["notification"] = notification_mapping_obj[
-                obj.notification_id
+                obj_data["notification_id"]
             ].to_dict()
             data_list.append(data_dict)
 
