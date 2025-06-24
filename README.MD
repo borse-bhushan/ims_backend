@@ -228,6 +228,13 @@ The system includes complete and dynamic API documentation:
 - 📖 **Swagger UI** – Available at [`/api/docs`](http://localhost/api/docs). It dynamically adapts based on tenant access and visibility.
 - 📘 **ReDoc** – Available at [`/api/redoc`](http://localhost/api/redoc) for a cleaner, read-only reference experience.
 - 📬 **OpenAPI Schema** – Can be fetched at [`/api/schema`](http://localhost/api/schema) for integration with external tools.
+
+- You can download the swagger schema.
+  - [Super Admin View](files/swagger/super_admin_schema.yaml)
+  - [Tenant View](files/swagger/tenant_schema.yaml)
+
+- OR
+
 - Checkout the swagger view in pdf
   - [Super Admin View](files/swagger/super_admin_swagger_view.pdf)
   - [Tenant View](files/swagger/tenant_swagger_view.pdf)
