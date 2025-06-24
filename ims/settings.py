@@ -242,10 +242,14 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [],
 }
 
+DESC = "This Django-based Inventory Management System (IMS) is a scalable, multi-tenant backend application built " \
+"to manage inventory operations across  multiple tenants. It supports fine-grained access control, optimized API routing, " \
+"and production-ready deployment with Docker and Nginx."
+
 
 SPECTACULAR_SETTINGS = {
-    "TITLE": PROJECT_NAME,
-    "DESCRIPTION": "IMS API",
+    "TITLE": "Inventory Management System(IMS)",
+    "DESCRIPTION": DESC,
     "VERSION": get_version_str(),
     "SERVE_INCLUDE_SCHEMA": False,
     "SWAGGER_UI_SETTINGS": {

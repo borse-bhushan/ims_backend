@@ -228,6 +228,9 @@ The system includes complete and dynamic API documentation:
 - 📖 **Swagger UI** – Available at [`/api/docs`](http://localhost/api/docs). It dynamically adapts based on tenant access and visibility.
 - 📘 **ReDoc** – Available at [`/api/redoc`](http://localhost/api/redoc) for a cleaner, read-only reference experience.
 - 📬 **OpenAPI Schema** – Can be fetched at [`/api/schema`](http://localhost/api/schema) for integration with external tools.
+- Checkout the swagger view in pdf
+  - [Super Admin View](files/swagger/super_admin_swagger_view.pdf)
+  - [Tenant View](files/swagger/tenant_swagger_view.pdf)
 
 ### 🔁 Postman Collection
 
@@ -235,8 +238,8 @@ The system includes complete and dynamic API documentation:
   - Auth token automatically saved to environment after login (`post-request` script included)
   - Subdomain captured and set in environment variables
 - 📦 Import the collection and environment files from the `postman/` directory.
-  - [Environment Config](postman/IMS.postman_environment.json)
-  - [Postman Collection](postman/IMS.postman_collection.json)
+  - [Environment Config](files/postman/IMS.postman_environment.json)
+  - [Postman Collection](files/postman/IMS.postman_collection.json)
 
 
 ## 👨‍💻 Author
