@@ -11,6 +11,24 @@ paths:
     get:
       operationId: audit_logs_retrieve
       description: Retrieve a list of all AuditLog records.
+      parameters:
+      - in: query
+        name: is_pagination
+        schema:
+          type: boolean
+          default: true
+      - in: query
+        name: page
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+      - in: query
+        name: page_size
+        schema:
+          type: integer
+          minimum: 1
+          default: 10
       tags:
       - Audit Logs
       security:
@@ -302,6 +320,36 @@ paths:
             request (Request): The HTTP request object containing the data.
         Returns:
             object: The list of retrieved objects if found.
+      parameters:
+      - in: query
+        name: category_code
+        schema:
+          type: string
+          maxLength: 256
+          minLength: 1
+      - in: query
+        name: category_name
+        schema:
+          type: string
+          maxLength: 256
+          minLength: 1
+      - in: query
+        name: is_pagination
+        schema:
+          type: boolean
+          default: true
+      - in: query
+        name: page
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+      - in: query
+        name: page_size
+        schema:
+          type: integer
+          minimum: 1
+          default: 10
       tags:
       - Category
       security:
@@ -800,6 +848,24 @@ paths:
             request (Request): The HTTP request object containing the data.
         Returns:
             object: The list of retrieved objects if found.
+      parameters:
+      - in: query
+        name: is_pagination
+        schema:
+          type: boolean
+          default: true
+      - in: query
+        name: page
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+      - in: query
+        name: page_size
+        schema:
+          type: integer
+          minimum: 1
+          default: 10
       tags:
       - Notification
       security:
@@ -1040,6 +1106,36 @@ paths:
             request (Request): The HTTP request object containing the data.
         Returns:
             object: The list of retrieved objects if found.
+      parameters:
+      - in: query
+        name: is_pagination
+        schema:
+          type: boolean
+          default: true
+      - in: query
+        name: page
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+      - in: query
+        name: page_size
+        schema:
+          type: integer
+          minimum: 1
+          default: 10
+      - in: query
+        name: product_code
+        schema:
+          type: string
+          maxLength: 256
+          minLength: 1
+      - in: query
+        name: product_name
+        schema:
+          type: string
+          maxLength: 256
+          minLength: 1
       tags:
       - Product
       security:
@@ -1846,6 +1942,51 @@ paths:
             request (Request): The HTTP request object containing the data.
         Returns:
             object: The list of retrieved objects if found.
+      parameters:
+      - in: query
+        name: is_pagination
+        schema:
+          type: boolean
+          default: true
+      - in: query
+        name: movement_type
+        schema:
+          enum:
+          - IN
+          - OUT
+          type: string
+          minLength: 1
+        description: |-
+          * `IN` - In
+          * `OUT` - Out
+      - in: query
+        name: page
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+      - in: query
+        name: page_size
+        schema:
+          type: integer
+          minimum: 1
+          default: 10
+      - in: query
+        name: product_id
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: reference_number
+        schema:
+          type: string
+          maxLength: 256
+          minLength: 1
+      - in: query
+        name: supplier_id
+        schema:
+          type: string
+          format: uuid
       tags:
       - Stock
       security:
@@ -2158,6 +2299,36 @@ paths:
             request (Request): The HTTP request object containing the data.
         Returns:
             object: The list of retrieved objects if found.
+      parameters:
+      - in: query
+        name: is_pagination
+        schema:
+          type: boolean
+          default: true
+      - in: query
+        name: page
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+      - in: query
+        name: page_size
+        schema:
+          type: integer
+          minimum: 1
+          default: 10
+      - in: query
+        name: supplier_code
+        schema:
+          type: string
+          maxLength: 256
+          minLength: 1
+      - in: query
+        name: supplier_name
+        schema:
+          type: string
+          maxLength: 256
+          minLength: 1
       tags:
       - Supplier
       security:
@@ -2656,6 +2827,34 @@ paths:
             request (Request): The HTTP request object containing the data.
         Returns:
             object: The list of retrieved objects if found.
+      parameters:
+      - in: query
+        name: first_name
+        schema:
+          type: string
+          minLength: 1
+      - in: query
+        name: is_pagination
+        schema:
+          type: boolean
+          default: true
+      - in: query
+        name: last_name
+        schema:
+          type: string
+          minLength: 1
+      - in: query
+        name: page
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+      - in: query
+        name: page_size
+        schema:
+          type: integer
+          minimum: 1
+          default: 10
       tags:
       - User
       security:
