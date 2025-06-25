@@ -112,6 +112,7 @@ class TenantViewSet(BaseView, viewsets.ViewSet):
             responses_401_example,
         ],
         tags=[MODULE],
+        parameters=[TenantQuerySerializer(partial=True)]
     )
     @register_permission(
         MODULE,

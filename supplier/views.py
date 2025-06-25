@@ -75,6 +75,7 @@ class SupplierViewSet(BaseView, viewsets.ViewSet):
             responses_401_example,
         ],
         tags=[MODULE],
+        parameters=[SupplierQuerySerializer(partial=True)]
     )
     @register_permission(MODULE, MethodEnum.GET, f"List {MODULE}")
     def list_all(self, request, *args, **kwargs):
