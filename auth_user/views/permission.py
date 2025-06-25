@@ -79,6 +79,7 @@ class ListCreatePermissionViewSet(
             permission_create_success_example,
         ],
         tags=[MODULE],
+        parameters=[PermissionListQuerySerializer(partial=True)],
     )
     @register_permission(
         MODULE, MethodEnum.POST, f"Create {MODULE}", create_permission=False

@@ -16,6 +16,8 @@ from auth_user.constants import MethodEnum
 from auth_user.db_access import user_manager
 
 from base.views.base import UpdateView, ListView
+from base.serializers.query import QuerySerializer
+
 from authentication.permission import register_permission
 from authentication.auth import get_authentication_classes
 
@@ -112,6 +114,7 @@ class NotificationViewSet(UpdateView, ListView, viewsets.ViewSet):
             responses_401_example,
         ],
         tags=[MODULE],
+        parameters=[QuerySerializer(partial=True)],
     )
     @register_permission(MODULE, MethodEnum.GET, f"Get {MODULE}")
     def list_all(self, request, *args, **kwargs):

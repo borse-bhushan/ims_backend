@@ -137,6 +137,9 @@ class ListView:
 
         query_params = serializer.validated_data
 
+        if not query_params["is_pagination"]:
+            return self.get_without_pagination(request, query)
+
         query_objects = self.get_query_obj(request=request)
 
         query_objects = self.get_search_and_filter_query(

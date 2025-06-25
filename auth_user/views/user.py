@@ -10,6 +10,7 @@ from base.views.list import ListView
 from base.views.create import CreateView
 from base.views.retrieve import RetrieveView
 
+
 from authentication.permission import register_permission
 from authentication.auth import get_authentication_classes
 
@@ -92,6 +93,7 @@ class UserViewSet(BaseView, viewsets.ViewSet):
             responses_401_example,
         ],
         tags=[MODULE],
+        parameters=[UserListQuerySerializer(partial=True)]
     )
     @register_permission(MODULE, MethodEnum.GET, f"Get {MODULE}")
     def list_all(self, request, *args, **kwargs):

@@ -89,6 +89,7 @@ class StockViewSet(CreateView, ListView, RetrieveView, DeleteView, viewsets.View
             responses_401_example,
         ],
         tags=[MODULE],
+        parameters=[StockQuerySerializer(partial=True)],
     )
     @register_permission(MODULE, MethodEnum.GET, f"List {MODULE}")
     def list_all(self, request, *args, **kwargs):

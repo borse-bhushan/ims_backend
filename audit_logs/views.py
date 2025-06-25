@@ -9,6 +9,7 @@ from drf_spectacular.utils import extend_schema
 
 from base.views.list import ListView
 from base.views.retrieve import RetrieveView
+from base.serializers.query import QuerySerializer
 
 from auth_user.constants import MethodEnum
 from authentication.permission import register_permission
@@ -64,6 +65,7 @@ class AuditLogViewSet(RetrieveView, ListView, viewsets.ViewSet):
             responses_401_example,
         ],
         tags=[MODULE_NAME],
+        parameters=[QuerySerializer(partial=True)]
     )
     @register_permission(MODULE_NAME, MethodEnum.GET, f"List {MODULE_NAME}")
     def list_all(self, request, *args, **kwargs):
