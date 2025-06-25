@@ -78,7 +78,7 @@ Seamless support for both **shared** and **isolated** databases. Each tenant can
 ----
 
 - 🧱 **Generic CRUD BaseView**
-  Built-in **generic CRUD view class** that handles all standard Create, Read, Update, and Delete operations with minimal boilerplate.
+  Build the custom **generic CRUD view class** that handles all standard Create, Read, Update, and Delete operations with minimal boilerplate.
   Just inherit `BaseView` and plug in:
   - Your `serializer_class`
   - Your `db-access layer`
@@ -175,7 +175,7 @@ Seamless support for both **shared** and **isolated** databases. Each tenant can
 - ✅ All modules are covered with unit tests
 - ✅ DRF serializers, views, middleware, and exceptions tested
 - ✅ Negative and edge cases are validated
-- Check the coverage report by clicking on [📊 Report](coverage/coverage_report.pdf)
+- Check the coverage report by clicking on [📊 Report](files/coverage/coverage_report.pdf)
 
 ## 🛠️ Versioning Management Command
 
@@ -247,7 +247,6 @@ The system includes complete and dynamic API documentation:
 - 📦 Import the collection and environment files from the `postman/` directory.
   - [Environment Config](files/postman/IMS.postman_environment.json)
   - [Postman Collection](files/postman/IMS.postman_collection.json)
-
 
 ## 👨‍💻 Author
 
